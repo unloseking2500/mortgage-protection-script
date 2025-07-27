@@ -2689,11 +2689,58 @@ const partner2SSN = rawSSN2
             return `${m[3]}-${mm}-${dd}`;
         }
 
+        // Extract partner specific details (height, weight, knockouts, etc.)
+        function parsePartnerDetails(text) {
+            const details = { partner1: {}, partner2: {} };
+            let current = null;
+            text.split(/\r?\n/).forEach(line => {
+                if (line.includes('=== PARTNER 1 DETAILS ===')) {
+                    current = 'partner1';
+                    return;
+                }
+                if (line.includes('=== PARTNER 2 DETAILS ===')) {
+                    current = 'partner2';
+                    return;
+                }
+                if (line.startsWith('=== ')) {
+                    current = null;
+                    return;
+                }
+                if (!current) return;
+
+                const m = line.match(/^([^:]+):\s*(.*)$/);
+                if (m) {
+                    details[current][m[1].trim()] = m[2].trim();
+                }
+            });
+            return details;
+        }
+
+        // Convert MM/DD/YYYY to age and fill age field
+        function setAgeFromDob(prefix) {
+            const dobInput = document.getElementById(`${prefix}Dob`);
+            const ageInput = document.getElementById(`${prefix}Age`);
+            if (dobInput && ageInput && dobInput.value) {
+                const birthDate = new Date(dobInput.value);
+                if (!isNaN(birthDate)) {
+                    const today = new Date();
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const m = today.getMonth() - birthDate.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    ageInput.value = age;
+                }
+            }
+        }
+
         // Populate form fields from CRM text
         function importCRMData() {
             const text = document.getElementById('crmDataInput').value;
             if (!text) return;
             const d = parseCRMData(text);
+			const details = parsePartnerDetails(text);
+
 
             if (d['Application Type']) {
                 const val = d['Application Type'].toLowerCase() === 'partners' ? 'partners' : 'solo';
@@ -2707,7 +2754,15 @@ const partner2SSN = rawSSN2
             if (d['Primary Applicant Name']) document.getElementById('primaryFullName').value = d['Primary Applicant Name'];
             if (d['Primary Applicant Gender']) document.getElementById('partner1GenderSelect').value = d['Primary Applicant Gender'].toLowerCase();
             if (d['Primary Applicant SSN']) document.getElementById('partner1SSN').value = d['Primary Applicant SSN'];
-            if (d['Primary Applicant DOB']) document.getElementById('partner1Dob').value = mmddyyyyToIso(d['Primary Applicant DOB']);
+            if (d['Primary Applicant DOB']) {
+                document.getElementById('partner1Dob').value = mmddyyyyToIso(d['Primary Applicant DOB']);
+                setAgeFromDob('partner1');
+            } else if (details.partner1 && details.partner1['DOB']) {
+                document.getElementById('partner1Dob').value = mmddyyyyToIso(details.partner1['DOB']);
+                setAgeFromDob('partner1');
+            } else if (details.partner1 && details.partner1['Age']) {
+                document.getElementById('partner1Age').value = parseInt(details.partner1['Age']) || '';
+            }
             if (d['Primary Driver License']) {
                 const parts = d['Primary Driver License'].split(',');
                 document.getElementById('partner1DriverLicense').value = parts[0] ? parts[0].trim() : '';
@@ -2717,12 +2772,91 @@ const partner2SSN = rawSSN2
             if (d['Secondary Applicant Name']) document.getElementById('secondaryFullName').value = d['Secondary Applicant Name'];
             if (d['Secondary Applicant Gender']) document.getElementById('partner2Gender').value = d['Secondary Applicant Gender'].toLowerCase();
             if (d['Secondary Applicant SSN']) document.getElementById('partner2SSN').value = d['Secondary Applicant SSN'];
-            if (d['Secondary Applicant DOB']) document.getElementById('partner2Dob').value = mmddyyyyToIso(d['Secondary Applicant DOB']);
+           if (d['Secondary Applicant DOB']) {
+                document.getElementById('partner2Dob').value = mmddyyyyToIso(d['Secondary Applicant DOB']);
+                setAgeFromDob('partner2');
+            } else if (details.partner2 && details.partner2['DOB']) {
+                document.getElementById('partner2Dob').value = mmddyyyyToIso(details.partner2['DOB']);
+                setAgeFromDob('partner2');
+            } else if (details.partner2 && details.partner2['Age']) {
+                document.getElementById('partner2Age').value = parseInt(details.partner2['Age']) || '';
+            }
             if (d['Secondary Driver License']) {
                 const parts = d['Secondary Driver License'].split(',');
                 document.getElementById('partner2DriverLicense').value = parts[0] ? parts[0].trim() : '';
                 document.getElementById('partner2DriverLicenseState').value = parts[1] ? parts[1].trim() : '';
             }
+
+            // Height and weight from partner details
+            const applyHeightWeight = (prefix, info) => {
+                if (!info) return;
+                if (info['Height']) {
+                    const m = info['Height'].match(/(\d+)'\s*(\d+)/);
+                    if (m) {
+                        document.getElementById(`${prefix}Feet`).value = m[1];
+                        document.getElementById(`${prefix}Inches`).value = m[2];
+                    }
+                }
+                if (info['Weight']) {
+                    document.getElementById(`${prefix}Weight`).value = parseInt(info['Weight']);
+                }
+            };
+
+            applyHeightWeight('partner1', details.partner1);
+            applyHeightWeight('partner2', details.partner2);
+
+            // Knockout conditions
+            const knockoutMap = {
+                'heart issues': 'HeartIssues',
+                'nitro': 'Nitro',
+                'lung issues': 'LungIssues',
+                'inhalers': 'Inhalers',
+                'cpap': 'CPAP',
+                'mental health': 'MentalHealth',
+                'memory meds': 'MemoryMeds',
+                'hiv': 'HIV',
+                'diabetes': 'Diabetes',
+                'cancer': 'Cancer',
+                'substance abuse': 'SubstanceAbuse',
+                'duis': 'DUIs',
+                'license suspended': 'LicenseSuspended',
+                'speeding tickets': 'SpeedingTickets'
+            };
+
+            const applyKnockouts = (prefix, info) => {
+                if (!info || !info['Knockout Conditions']) return;
+                // clear existing
+                Object.values(knockoutMap).forEach(id => {
+                    const el = document.getElementById(`${prefix}${id}`);
+                    if (el) el.checked = false;
+                });
+                if (document.getElementById(`${prefix}CPAPOxygen`)) {
+                    document.getElementById(`${prefix}CPAPOxygen`).value = 'no';
+                    document.getElementById(`${prefix}CPAPOxygen`).closest('.cpap-followup').classList.add('hidden');
+                }
+
+                const conds = info['Knockout Conditions'];
+                if (!conds || conds.toLowerCase() === 'none') return;
+                conds.split(',').forEach(raw => {
+                    const cond = raw.trim();
+                    const key = cond.toLowerCase();
+                    if (key === 'cpap with oxygen') {
+                        const box = document.getElementById(`${prefix}CPAP`);
+                        if (box) box.checked = true;
+                        const oxy = document.getElementById(`${prefix}CPAPOxygen`);
+                        if (oxy) {
+                            oxy.value = 'yes';
+                            oxy.closest('.cpap-followup').classList.remove('hidden');
+                        }
+                    } else if (knockoutMap[key]) {
+                        const el = document.getElementById(`${prefix}${knockoutMap[key]}`);
+                        if (el) el.checked = true;
+                    }
+                });
+            };
+
+            applyKnockouts('partner1', details.partner1);
+            applyKnockouts('partner2', details.partner2);
 
             const num = v => (v || '').replace(/[^0-9.]/g, '');
 
