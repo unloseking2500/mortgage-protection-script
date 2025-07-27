@@ -1,0 +1,2938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITRUST | Mortgage Protection Script with Risk Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: #333;
+            position: relative;
+            padding-right: 35%; /* Make space for the floating box */
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0066cc;
+        }
+        .header img {
+            max-width: 200px;
+        }
+        .script-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid #0066cc;
+            background-color: #f9f9f9;
+        }
+        .script-intro {
+            background-color: #e6f7ff;
+            border-left-color: #0099ff;
+        }
+        .script-client-worksheet {
+            background-color: #fff8e6;
+            border-left-color: #ffcc00;
+        }
+        .script-health {
+            background-color: #ffe6e6;
+            border-left-color: #ff3333;
+        }
+        .script-coverage {
+            background-color: #e6ffe6;
+            border-left-color: #00cc66;
+        }
+        .script-close {
+            background-color: #f0e6ff;
+            border-left-color: #9933ff;
+        }
+        .script-objections {
+            background-color: #ffebee;
+            border-left-color: #ff5252;
+        }
+        .script-term-options {
+            background-color: #fff3e0;
+            border-left-color: #ff9800;
+        }
+        .application-type {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .columns {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .column {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .financial-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            margin-bottom: 10px;
+        }
+        .checkbox-group label {
+            display: inline;
+            font-weight: normal;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .hidden {
+            display: none;
+        }
+        h2, h3 {
+            color: #0066cc;
+        }
+        .gender-select {
+            margin-bottom: 15px;
+        }
+        .height-input {
+            display: flex;
+            gap: 10px;
+        }
+        .height-input input {
+            width: 50%;
+        }
+        .age-input {
+            display: flex;
+            gap: 10px;
+        }
+        .age-input input {
+            width: 50%;
+        }
+        .age-note {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .medication-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .medication-row input {
+            flex: 1;
+        }
+        .add-medication {
+            margin-top: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .section-title {
+            background-color: #f5f5f5;
+            padding: 5px 10px;
+            margin: 15px 0 10px 0;
+            border-left: 3px solid #0066cc;
+        }
+        .knockout-question {
+            font-style: italic;
+            margin-bottom: 5px;
+            color: #d32f2f;
+        }
+        .options {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e6f2ff;
+            border-radius: 4px;
+        }
+        .cpap-followup {
+            margin-left: 20px;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ccc;
+        }
+        .height-weight-warning {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        #copyStatus {
+            color: green;
+            margin-left: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        .button-group {
+            margin: 20px 0;
+        }
+        .script-question {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+		.script-question-optional {
+			font-weight: normal;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+        .script-instruction {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .script-highlight {
+            background-color: #fffacd;
+            padding: 2px 4px;
+        }
+        .applicant-name {
+            margin-bottom: 15px;
+        }
+        .risk-assessment-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            border: 1px solid #0066cc;
+        }
+        .partner-results {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            border-left: 4px solid #0066cc;
+        }
+        .combined-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6ffe6;
+            border-radius: 4px;
+            border-left: 4px solid #00cc66;
+        }
+        .reasoning {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff8e6;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .bold-text {
+            font-weight: bold;
+        }
+        .term-section {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+      
+        .fex-section {
+            background-color: #cfe2f3;
+            border-left: 4px solid #006eaa;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tool-link {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+        .tool-link:hover {
+            color: #0052a3;
+        }
+  
+        /* Floating summary box styles */
+        .summary-box {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 30%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            z-index: 1000;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            color: #0066cc;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .summary-content {
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .summary-section {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .summary-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .summary-label {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        .summary-value {
+            margin-left: 10px;
+        }
+        .refresh-summary {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+        .refresh-summary:hover {
+            background-color: #0052a3;
+        }
+        .medication-list {
+            margin-top: 5px;
+            padding-left: 15px;
+        }
+        .risk-result {
+            background-color: #f0f8ff;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .risk-result-title {
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        /* Premium table styles */
+        #premiumCalcSection, 
+        #premiumCalcSection * {
+            font-size: clamp(12px, 1.2vw, 16px);
+        }
+
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        
+        .premium-table th, .premium-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .premium-table th {
+            background-color: #f5f5f5;
+        }
+        
+        .calculated {
+            background-color: #e6ffe6;
+            font-weight: bold;
+        }
+        
+        .premium-table input[type="text"], .premium-table input[type="number"] {
+            width: 80%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .premium-table input[type="number"] {
+            width: 50px;
+        }
+        
+        .plan-option1, .plan-option2 {
+            width: 100%;
+            min-width: 70px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        /* New color classes for plan options */
+        .opt1 {
+            background-color: #e6faff !important;
+        }
+        .opt2 {
+            background-color: #ffe6e6 !important;
+        }
+        .opt3 {
+            background-color: #f4e6ff !important;
+        }
+
+        /* Style the dropdown options (note: support may vary by browser) */
+        .plan-option1 option[value="t1"] {
+            background-color: #e6faff;
+        }
+        .plan-option1 option[value="t2"] {
+            background-color: #ffe6e6;
+        }
+        .plan-option1 option[value="t3"] {
+            background-color: #f4e6ff;
+        }
+
+        .plan-option2 option[value="w1"] {
+            background-color: #e6faff;
+        }
+        .plan-option2 option[value="w2"] {
+            background-color: #ffe6e6;
+        }
+        .plan-option2 option[value="w3"] {
+            background-color: #f4e6ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Summary Box -->
+    <div class="summary-box">
+        <h3>Application Summary</h3>
+        <div id="summaryContent" class="summary-content">
+            <!-- Summary content will be populated here -->
+            <p>Information will appear as you fill out the form.</p>
+        </div>
+        <button class="refresh-summary" onclick="updateSummary()">Refresh Summary</button>
+    </div>
+
+    <div class="header">
+        <h1>UNITRUST FINANCIAL GROUP</h1>
+        <h2>Mortgage Protection Script with Risk Assessment</h2>
+    </div>
+
+    <div class="application-type">
+        <h3>Application Type</h3>
+        <div class="form-group">
+            <label><input type="radio" name="applicationType" value="solo" checked> Solo</label>
+            <label><input type="radio" name="applicationType" value="partners"> Partners</label>
+        </div>
+        
+        <div class="applicant-name">
+            <label>Partner 1 Full Name:</label>
+            <input type="text" id="primaryFullName" placeholder="Full Name" oninput="updateSummary()">
+        </div>
+        
+        <div id="partner1Gender" class="gender-select">
+            <label>Partner 1 Gender:</label>
+            <select id="partner1GenderSelect" onchange="updateSummary()">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        
+        <div id="secondaryNameContainer" class="applicant-name hidden">
+            <label>Partner 2 Full Name:</label>
+            <input type="text" id="secondaryFullName" placeholder="Full Name" oninput="updateSummary()">
+        </div>
+        
+        <div id="partner2GenderContainer" class="gender-select hidden">
+            <label>Partner 2 Gender:</label>
+            <select id="partner2Gender" onchange="updateSummary()">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <h4>Mortgage Address</h4>
+            <div class="form-group">
+                <label>Full Address:</label>
+                <input type="text" id="mortgageAddress" placeholder="Street, City, State, Zip" oninput="updateSummary()">
+            </div>
+        </div>
+    </div>
+
+    <!-- INTRO SECTION -->
+    <div class="script-section script-intro">
+        <h3>1. Intro</h3>
+        <p>Hey ______ it's (your name) calling you back for the mortgage protection phone appointment, how’s your day going</p>
+		
+		<p>Great… Go ahead and grab a pen and paper or something to write down notes with, that way I can give you some of my information here.</p>
+		
+		<p>(If co-borrower or married/spouse/partner) – Is Mr./Mrs._______there with you?
+		
+<p class="script-instruction">If not ask where he/she is and how long until they’re with you/on the phone?</p>
+<p class="script-instruction">• If it’s a couple minutes, just small talk –</p>
+<p class="script-instruction">• if its like 30 mins to an hour DO NOT try to go through it then unless they are both on the phone, reschedule the appointment.</p>
+<p class="script-instruction">(If they are both on the phone or if the person is single keep going)</p>
+        
+       
+      
+        <p class="script-instruction script-highlight">-Info verification-</p>
+        <p>OK I’m just getting everything pulled up.
+So, let’s see, looks like you’re located at address: _____ is that correct?</p>
+
+        <p class="script-instruction script-highlight">-Explain why you are going to ask questions-</p>
+		
+		<p>Ok great, so apparently, we haven’t gone over the mortgage
+protection insurance options with you yet and that’s what they have
+assigned me to do.</p>
+        <p>The coverage is based on your:</p>
+        <p>age</p>
+        <p>Health</p>
+        <p>and income </p>
+        <p>… and from there I’ll know what the options and the cost will be. </p>
+    </div>
+
+
+    <!-- HEALTH QUESTIONS SECTION -->
+    <div class="script-section script-health">
+        <h3>2. Health Questions</h3>
+        <p> "For the health part, it's just your medications and diagnosis so
+Let's start with that.
+"</p>
+        
+        <div class="columns">
+            <div id="partner1Column" class="column">
+                <h3 id="healthHeader">PARTNER 1 HEALTH</h3>
+                <div class="form-group">
+                    <label class="script-question">1. For you sir you’re currently how old? What's your date of birth?</label>
+                    <input type="date" id="partner1Dob" onchange="updateSummary()">
+                    <div class="age-input">
+                        <div style="width: 100%;">
+                            <label for="partner1Age">Age (if DOB unknown):</label>
+                            <input type="number" id="partner1Age" oninput="updateSummary()">
+                        </div>
+                    </div>
+                    <div class="age-note">Enter either DOB or Age. DOB will override Age if both are provided.</div>
+                </div>
+                
+    
+                
+                <div class="form-group">
+                    <label class="script-question">2. Neither of you sound a day over 30… Do either of you use any type of tobacco? Or have you in the past 3 years?</label>
+                    <select id="partner1Smoker" onchange="updateSummary()">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+				
+				            <div class="form-group">
+                    <label class="script-question">3. What's your height and weight?</label>
+                    <div class="height-input">
+                        <input type="number" id="partner1Feet" placeholder="Feet" min="4" max="7" oninput="updateSummary()">
+                        <input type="number" id="partner1Inches" placeholder="Inches" min="0" max="11" oninput="updateSummary()">
+                    </div>
+                    <input type="number" id="partner1Weight" placeholder="Weight (lbs)" style="margin-top: 5px;" oninput="updateSummary()">
+                </div>
+                
+                <div class="form-group">
+                    <label class="script-question">4. Ok and for you sir, what medications are you currently prescribed? (let them go through their list of the names)
+ [HBHC and diabetic medication?
+Metformin?]</label>
+                    <div id="partner1Medications">
+                        <div class="medication-row">
+                            <input type="text" placeholder="Medication name" oninput="updateSummary()">
+                        </div>
+                    </div>
+                    <div class="add-medication" onclick="addMedication('partner1')">+ Add Medication</div>
+                </div>
+                
+				
+				<h4>VERIFY FOR BOTH PARTIES:</h4>
+				
+                <div class="form-group">
+                    <label class="script-question">5. Are there any medications prescribed that you take every now and then or choose not to take?</label>
+                   
+                </div>
+				
+					 <div class="form-group">
+                    <label class="script-question">6. Any inhalers?</label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="script-question">7. The insurance carriers will pull the last 10 years of your rx history which will show everything prescribed even if you choose not to take it or you were taken off of it. Is there anything else that might show up?</label>
+                </div>
+                
+                <p class="script-instruction">Ask the client what they take the medications for. Some medications have different uses.</p>
+                
+                <p class="script-instruction bold-text">"Now I know I beat you up with a lot of questions already but I am legally obligated to ask you these next questions by the insurance companies I represent."</p>
+                
+                <h4>Knockout Questions</h4>
+                
+                <div class="knockout-question">1. Have you ever had a heart attack, a stroke, a mini stroke (TIA), any stents, or heart related issues?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1HeartIssues" onchange="updateSummary()">
+                    <label for="partner1HeartIssues">Yes</label>
+                </div>
+                
+                <div class="knockout-question">2. Have you ever taken nitroglycerin for chest pain, or have that prescribed to you?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1Nitro" onchange="updateSummary()">
+                    <label for="partner1Nitro">Yes</label>
+                </div>
+                
+                <div class="knockout-question">3. Do you have any lung related issues, such as COPD, or chronic asthma?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1LungIssues" onchange="updateSummary()">
+                    <label for="partner1LungIssues">Yes</label>
+                </div>
+                
+                <div class="knockout-question">4. Do you have any inhalers you are prescribed?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1Inhalers" onchange="updateSummary()">
+                    <label for="partner1Inhalers">Yes</label>
+                </div>
+                
+                <div class="knockout-question">5. Do you use CPAP or BI-PAP for sleep?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1CPAP" class="cpap-checkbox" onchange="updateSummary()">
+                    <label for="partner1CPAP">Yes</label>
+                </div>
+                <div class="checkbox-group cpap-followup hidden">
+                    <label>If YES, ask if it is with the oxygen canister:</label>
+                    <select id="partner1CPAPOxygen" onchange="updateSummary()">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+                
+                <div class="knockout-question">6. Are you diagnosed with any mental health or mood disorders, such as anxiety, depression, ptsd, etc?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1MentalHealth" onchange="updateSummary()">
+                    <label for="partner1MentalHealth">Yes</label>
+                </div>
+                
+                <div class="knockout-question">7. Are you taking any medications to assist with memory? Such as Alzheimer's or dementia?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1MemoryMeds" onchange="updateSummary()">
+                    <label for="partner1MemoryMeds">Yes</label>
+                </div>
+                
+                <div class="knockout-question">8. Have you ever been diagnosed or treated for AIDS, ARC, or HIV? Any sexually transmitted diseases?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1HIV" onchange="updateSummary()">
+                    <label for="partner1HIV">Yes</label>
+                </div>
+                
+                <div class="knockout-question">9. Have you ever been treated for diabetes?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1Diabetes" onchange="updateSummary()">
+                    <label for="partner1Diabetes">Yes</label>
+                </div>
+                
+                <div class="knockout-question">10. Have you ever been treated for any type of cancer?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1Cancer" onchange="updateSummary()">
+                    <label for="partner1Cancer">Yes</label>
+                </div>
+                
+                <div class="knockout-question">11. Have you ever had issues with drugs or alcohol requiring counseling?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1SubstanceAbuse" onchange="updateSummary()">
+                    <label for="partner1SubstanceAbuse">Yes</label>
+                </div>
+                
+                <div class="knockout-question">12. Any DUI's or felonies in the last 10 years?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1DUIs" onchange="updateSummary()">
+                    <label for="partner1DUIs">Yes</label>
+                </div>
+                
+                <div class="knockout-question">13. Have you had your driver's license suspended or revoked in the past 5 years?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1LicenseSuspended" onchange="updateSummary()">
+                    <label for="partner1LicenseSuspended">Yes</label>
+                </div>
+                
+                <div class="knockout-question">14. Have you had more than 2 speeding tickets in the last 4 years?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner1SpeedingTickets" onchange="updateSummary()">
+                    <label for="partner1SpeedingTickets">Yes</label>
+                </div>
+            </div>
+
+            <div id="partner2Column" class="column hidden">
+                <h3>PARTNER 2 HEALTH</h3>
+                <div class="form-group">
+                    <label class="script-question">1. And ma’am how old are you? What's your date of birth?</label>
+                    <input type="date" id="partner2Dob" onchange="updateSummary()">
+                    <div class="age-input">
+                        <div style="width: 100%;">
+                            <label for="partner2Age">Age (if DOB unknown):</label>
+                            <input type="number" id="partner2Age" oninput="updateSummary()">
+                        </div>
+                    </div>
+                    <div class="age-note">Enter either DOB or Age. DOB will override Age if both are provided.</div>
+                </div>
+                
+				     <div class="form-group">
+                    <label class="script-question">2. Neither of you sound a day over 30… Do either of you use any type of tobacco? Or have you in the past 3 years?</label>
+                    <select id="partner2Smoker" onchange="updateSummary()">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+				
+                <div class="form-group">
+                    <label class="script-question">3. What's your height and weight?</label>
+                    <div class="height-input">
+                        <input type="number" id="partner2Feet" placeholder="Feet" min="4" max="7" oninput="updateSummary()">
+                        <input type="number" id="partner2Inches" placeholder="Inches" min="0" max="11" oninput="updateSummary()">
+                    </div>
+                    <input type="number" id="partner2Weight" placeholder="Weight (lbs)" style="margin-top: 5px;" oninput="updateSummary()">
+                </div>
+                
+           
+                
+                <div class="form-group">
+                    <label class="script-question">4. Ok and ma’am, what medications are you currently prescribed? (let them go through their list or the names)
+ [HBHC and diabetic medication? Metformin?]</label>
+                    <div id="partner2Medications">
+                        <div class="medication-row">
+                            <input type="text" placeholder="Medication name" oninput="updateSummary()">
+                        </div>
+                    </div>
+                    <div class="add-medication" onclick="addMedication('partner2')">+ Add Medication</div>
+                </div>
+                
+					<h4>VERIFY FOR BOTH PARTIES:</h4>
+				
+                <div class="form-group">
+                    <label class="script-question">5. Are there any medications prescribed that you take every now and then or choose not to take?</label>
+                </div>
+				
+				 <div class="form-group">
+                    <label class="script-question">6. Any inhalers?</label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="script-question">7. The insurance carriers will pull the last 10 years of your rx history which will show everything prescribed even if you choose not to take it or you were taken off of it. Is there anything else that might show up?</label>
+                </div>
+                
+                <p class="script-instruction">Ask the client what they take the medications for. Some medications have different uses.</p>
+                
+                <p class="script-instruction bold-text">"Now I know I beat you up with a lot of questions already but I am legally obligated to ask you these next questions by the insurance companies I represent."</p>
+                
+                <h4>Knockout Questions</h4>
+                
+                <div class="knockout-question">1. Have you ever had a heart attack, a stroke, a mini stroke (TIA), any stents, or heart related issues?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2HeartIssues" onchange="updateSummary()">
+                    <label for="partner2HeartIssues">Yes</label>
+                </div>
+                
+                <div class="knockout-question">2. Have you ever taken nitroglycerin for chest pain, or have that prescribed to you?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2Nitro" onchange="updateSummary()">
+                    <label for="partner2Nitro">Yes</label>
+                </div>
+                
+                <div class="knockout-question">3. Do you have any lung related issues, such as COPD, or chronic asthma?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2LungIssues" onchange="updateSummary()">
+                    <label for="partner2LungIssues">Yes</label>
+                </div>
+                
+                <div class="knockout-question">4. Do you have any inhalers you are prescribed?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2Inhalers" onchange="updateSummary()">
+                    <label for="partner2Inhalers">Yes</label>
+                </div>
+                
+                <div class="knockout-question">5. Do you use CPAP or BI-PAP for sleep?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2CPAP" class="cpap-checkbox" onchange="updateSummary()">
+                    <label for="partner2CPAP">Yes</label>
+                </div>
+                <div class="checkbox-group cpap-followup hidden">
+                    <label>If YES, ask if it is with the oxygen canister:</label>
+                    <select id="partner2CPAPOxygen" onchange="updateSummary()">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+                
+                <div class="knockout-question">6. Are you diagnosed with any mental health or mood disorders, such as anxiety, depression, ptsd, etc?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2MentalHealth" onchange="updateSummary()">
+                    <label for="partner2MentalHealth">Yes</label>
+                </div>
+                
+                <div class="knockout-question">7. Are you taking any medications to assist with memory? Such as Alzheimer's or dementia?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2MemoryMeds" onchange="updateSummary()">
+                    <label for="partner2MemoryMeds">Yes</label>
+                </div>
+                
+                <div class="knockout-question">8. Have you ever been diagnosed or treated for AIDS, ARC, or HIV? Any sexually transmitted diseases?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2HIV" onchange="updateSummary()">
+                    <label for="partner2HIV">Yes</label>
+                </div>
+                
+                <div class="knockout-question">9. Have you ever been treated for diabetes?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2Diabetes" onchange="updateSummary()">
+                    <label for="partner2Diabetes">Yes</label>
+                </div>
+                
+                <div class="knockout-question">10. Have you ever been treated for any type of cancer?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2Cancer" onchange="updateSummary()">
+                    <label for="partner2Cancer">Yes</label>
+                </div>
+                
+                <div class="knockout-question">11. Have you ever had issues with drugs or alcohol requiring counseling?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2SubstanceAbuse" onchange="updateSummary()">
+                    <label for="partner2SubstanceAbuse">Yes</label>
+                </div>
+                
+                <div class="knockout-question">12. Any DUI's or felonies in the last 10 years?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2DUIs" onchange="updateSummary()">
+                    <label for="partner2DUIs">Yes</label>
+                </div>
+                
+                <div class="knockout-question">13. Have you had your driver's license suspended or revoked in the past 5 years?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2LicenseSuspended" onchange="updateSummary()">
+                    <label for="partner2LicenseSuspended">Yes</label>
+                </div>
+                
+                <div class="knockout-question">14. Have you had more than 2 speeding tickets in the last 4 years?</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="partner2SpeedingTickets" onchange="updateSummary()">
+                    <label for="partner2SpeedingTickets">Yes</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="risk-assessment-section">
+            <h3>Risk Assessment</h3>
+            <button id="calculateBtn">Calculate Risk Class & Recommendation</button>
+            
+            <div id="results" class="hidden">
+                <div id="partner1Results" class="partner-results hidden">
+                    <h4>Partner 1 Results</h4>
+                    <div id="partner1RiskClass"></div>
+                    <div id="partner1Tool"></div>
+                    <div id="partner1Options" class="options hidden"></div>
+                    <div id="partner1Reasoning" class="reasoning"></div>
+                </div>
+                
+                <div id="partner2Results" class="partner-results hidden">
+                    <h4>Partner 2 Results</h4>
+                    <div id="partner2RiskClass"></div>
+                    <div id="partner2Tool"></div>
+                    <div id="partner2Options" class="options hidden"></div>
+                    <div id="partner2Reasoning" class="reasoning"></div>
+                </div>
+                
+                <div id="combinedResults" class="combined-results hidden">
+                    <h4>Combined Recommendation</h4>
+                    <div id="combinedRiskClass"></div>
+                    <div id="combinedTool"></div>
+                    <div id="combinedOptions" class="options hidden"></div>
+                    <div id="combinedReasoning" class="reasoning"></div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+
+    <!-- CLIENT WORKSHEET SECTION -->
+    <div class="script-section script-client-worksheet">
+        <h3>3. Client Worksheet</h3>
+        <h4>Needs Analysis</h4>
+        
+		<p class="script-instruction bold-text">"so now to the income part……..</p>
+		
+		
+		   <div class="form-group">
+            <label class="script-question">1. For you sir, what is your NET monthly income by yourself, roughly…?</label>
+            <input type="number" id="monthlyIncome" placeholder="$" oninput="updateSummary()">
+        </div>
+        
+        <div id="partner2IncomeContainer" class="form-group hidden">
+            <label class="script-question">1B. Ok and for you ma’am what is your NET monthly income by yourself roughly?</label>
+            <input type="number" id="partner2MonthlyIncome" placeholder="$" oninput="updateSummary()">
+        </div>
+		
+		
+		 <div class="form-group">
+            <label class="script-question-optional">2 [OPTIONAL]. So what is it that you do for work, sir? Comment ask questions</label>
+            <input type="text" id="occupation" placeholder="Occupation" oninput="updateSummary()">
+        </div>
+        
+        <div id="partner2OccupationContainer" class="form-group hidden">
+            <label class="script-question-optional">2B [OPTIONAL]. What about you ma'am?</label>
+            <input type="text" id="partner2Occupation" placeholder="Partner 2 Occupation" oninput="updateSummary()">
+        </div>
+        
+     
+        <div class="form-group">
+            <label class="script-question-optional">3 [OPTIONAL]. Confirm the mortgage- "When you closed, it looks like your total mortgage amount was (confirm mortgage amount)?"</label>
+            <input type="number" id="mortgageAmount" placeholder="$" oninput="updateSummary()">
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question-optional">4 [OPTIONAL]. And did you purchase that home recently or have you been living in it and refinanced?</label>
+            <select id="homePurchaseType" onchange="updateSummary()">
+                <option value="Recent">Purchased recently</option>
+                <option value="Refinanced">Refinanced</option>
+                <option value="HELOC">HELOC</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question-optional">5 [OPTIONAL]. And what is the length of that mortgage? Is it 30 yrs or something less?</label>
+            <input type="number" id="mortgageTerm" placeholder="Years" oninput="updateSummary()">
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question-optional">6 [OPTIONAL]. Perfect, now as far as the monthly payment goes, what do you pay per month with everything included?</label>
+            <input type="number" id="monthlyPayment" placeholder="$" oninput="updateSummary()">
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question">7. Ok and how much is the new (or existing) mortgage payment going to be?</label>
+            <input type="number" id="mortgagePaymentDetails" placeholder="$" oninput="updateSummary()">
+        </div>
+        
+       
+        
+        <div class="form-group">
+            <label class="script-question">8. And if something happens to both of you at the same time, who
+do you want to leave the house to?</label>
+            <input type="text" id="beneficiaryName" placeholder="Beneficiary Name" oninput="updateSummary()">
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question-optional">8B [OPTIONAL]. What do you think (name of beneficiary) would like to do with the home would they want to sell, keep it, or rent it out?</label>
+            <select id="beneficiaryPlan" onchange="updateSummary()">
+                <option value="sell">Sell</option>
+                <option value="keep">Keep</option>
+                <option value="rent">Rent out</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question-optional">8C [OPTIONAL]. Okay where does (name of beneficiary) live? Is he/she close?</label>
+            <input type="text" id="beneficiaryLocation" placeholder="Location" oninput="updateSummary()">
+        </div>
+    </div>
+
+
+    <!-- EXPLAIN COVERAGE SECTION -->
+    <div class="script-section script-coverage">
+        <h3>3. Explain Coverage</h3>
+        <p class="script-instruction">Ok now I’m going to go over what the insurance does and what it doesn't and I’m going to start with the bad part first....</p>	
+
+<p class="script-instruction">So, what the insurance WON’T Cover is <strong>Suicide, Death while committing a felony, and it won’t cover Death while participating in a riot.</strong></p>
+<p class="script-instruction">So as long as you guys don’t plan on doing anything like that, you’re good....
+</p>
+                
+			<p class="script-instruction"><strong>	What It Does Cover:</strong></p>
+				
+				
+        <h4>1. Death Benefit (Terms & FE)</h4>
+        <p>So, with any insurance like this you have the <strong>death benefit</strong>...</p>
+        <p>This will cover any type of death – whether it's <b><u><em>• Natural</em></u></b>   <b><u><em>• an accident</em></u></b> • or caused by <b><u><em>pre-existing conditions</em></u></b>...doesn't matter how, it will pay out within 24-48 hours</p>
+        
+        <h4>2. Terminal Illness (All Terms & FE Apps excluding Graded Policies)</h4>
+        <p>This is where if you’re told by a doctor you have like 12 months
+or less to live as a life expectancy due to an illness or disease
+the insurance carrier will let you start using a portion of the
+death benefit while you’re living.</p>
+<p>You can start paying the mortgage payment while you’re living.
+Most people usually have increased medical expenses and
+they usually can’t work during this time.</p>
+                 <div class="term-section">
+
+        <h4>Critical Illness (Standard TERMS only)</h4>
+        <p>If you’re able to qualify, you have a <b>critical illness benefit</b>, This is where if you have a heart attack, stroke, or cancer, you can start using a portion of the death benefit while you’re living based on the severity of the situation.	
+</p>
+<p>This is so you can use it for mortgage payments, loss of income, medical expenses – whatever you need to use it for. 
+</p>
+        
+        <h4>Chronic Illness (Standard TERMS & Some FE Policies))</h4>
+        <p>And the next living benefit covers <b>Chronic Illness</b>. This is where if you basically can't take care of yourself, for Example: <b><em>:
+<p>• Bathing</p>
+<p>• Dressing</p>
+<p>• Eating</p>
+<p>• Toileting</p>
+<p>• Transferring yourself</p>
+<p>• Or a severe cognitive impairment for 90 consecutive days</em></b> </p>
+ 								
+<p>You can start using your death benefit ahead of time for the mortgage, your long-term care expenses, medical expenses, whatever you need to use it for its up to you. </p>
+        
+    </div>   
+
+			<p class="script-instruction"><strong>TIE DOWN</strong></p>
+
+<p>Do all of those make sense for you?</p>
+
+	</div>
+
+
+    <!-- QUESTIONS I WOULD ASK SECTION -->
+    <div class="script-section script-coverage">
+        <h3>4. Questions I’d Want To Ask:</h3>
+        <p class="script-instruction"><b>OK so now I’m going to go over a couple things that I would want to know about this protection if it were me or MY family.</b></p>
+        <p>These are the questions I would ask:</p>
+
+ <h4>1. WHAT’S THE DIFFERENCE BETWEEN REGULAR LIFE
+INSURANCE AND THIS COVERAGE?</h4>
+<p>• The difference is old school regular life insurance just pays
+at death and that’s it…..you won’t see any of the benefit
+while living.</p>
+<p>• Whereas this type of life insurance covers death and
+covers you while you’re living like we discussed earlier.
+This will allow you to access a portion of the benefit in
+cash while living. There’s no physical exam and today’s
+application process is simple and streamline.</p>
+
+ <h4>2. WHAT HAPPENS TO THE INSURANCE IF THE LENDER
+SELLS YOUR LOAN, YOU REFINANCE ELSEWHERE,
+PAY IT OFF, ETC?</h4>
+<p>…nothing happens – it goes wherever you go as long as
+you continue to pay for it. Your beneficiary(s) can still use
+the money for whatever they see fit as a tax-free benefit.</p>
+<p>• Like Assisting with final expense costs,</p>
+<p>• Cover unforeseen expenses,</p>
+<p>• or whatever else is needed.</p>
+
+<h4>3. DOES THE BENEFIT DECREASE WITH THE MORTGAGE OR DOES IT STAY THE SAME?</h4>
+
+<p><b><u>IF SELLING CRITICAL PERIOD (FEX)</u></b></p>
+
+<p>The benefit stays the same and is based on your mortgage payments, not your mortgage balance. You won’t have to worry about your premiums increasing either.</p>
+
+<p><b><u>IF SELLING TERM OPTION (ONLY IF THEY QUALIFY)</u></b></p>
+
+<p>The death benefit stays the same, but you do have some options that will decrease with the mortgage as well if that comes up.</p>
+
+<p><strong>Does all that make sense?</strong></p>
+
+Perfect, now based on that, do you guys have any questions you can think of? Aside from the obvious, of how much does it cost? (They usually laugh and say, "Yeah, how much does it cost?") then say.."Okay let’s go through that."
+		
+
+    </div>  </div>
+
+
+    <!-- OPTIONS SECTION -->
+    <div class="script-section script-coverage">
+        <h3>5. Options</h3>
+        <p>So there are a few different options, and everyone's situation is different so it's all custom for your individual needs</p>
+        
+         <div class="fex-section">
+        <h3>🔹Critical period FEX</h3>
+
+        <p><strong>🔹OPTION 1</strong></p>
+        <p>The first one is the one everyone thinks of and it's the one that covers the full balance of the mortgage.</p>
+        <p>And even though this is the option that everyone thinks of it's the option that no one goes with. 
+Because This option doesn’t always make the most sense in your situation… It tends to be extremely expensive. Because every time you make your monthly payment, your mortgage goes down, and the equity in the home goes up, right? So… the equity in the home is the real legacy you are leaving behind to (beneficiary name).  And I don’t think you want another mortgage payment just for insurance.
+        <p>What everyone does in your situation is go with the next option</p>
+        
+        <p><strong>🔹OPTION 2</strong></p>
+        <p>This plan is called the <strong>payment protector plan</strong>. It is based off the mortgage payment amount. </p>
+<p>It covers the full mortgage payment for 1, 2 or 3 years.</p>
+<p>So, when you pass away, your survivor(s) won’t have to worry about the mortgage payment for that timeframe.</p>
+<p>This provides them time to figure out whether they want to sell the home, keep it, rent it, etc... .giving them time to figure out how to take care of this new debt that could be a burden on them.
+</p>
+                <p><strong>🔹Tie Down</strong></p>
+        <p>Do those options make sense to you guys? Do you have any
+questions to far?</p>
+<p><strong>🔹-Put together a plan-</strong></p>
+        <p class="script-instruction">Perfect, let me put you on a brief hold so I can put the programs together.  I don’t have any fancy elevator music so it might be silent here for a second. Just do me a favor and grab your pen and paper, stay on the line and I will be back with you shortly to go over the numbers.</p>
+        
+        <p class="script-instruction script-highlight">(Get the programs together mute your phone)</p>
+<p class="script-instruction">
+  <a href="https://docs.google.com/spreadsheets/d/1w84OXjj9aosLLbz6kTpKrLkucGGiGVor/edit?usp=sharing&ouid=113541202851165482225&rtpof=true&sd=true" 
+     class="script-highlight" 
+     target="_blank">
+    https://docs.google.com/spreadsheets/d/1w84OXjj9aosLLbz6kTpKrLkucGGiGVor/edit?usp=sharing&ouid=113541202851165482225&rtpof=true&sd=true
+  </a>
+</p>    </div>
+
+<!-- TERM OPTIONS SECTION -->
+    <div class="script-section script-term-options">
+        <h3>🔺Term approved</h3>
+        <p><strong>🔺OPTION 1</strong></p>
+        <p>The first one is the one everyone thinks of and it's the one that covers the full balance of the mortgage.</p>
+        <p><strong>🔺OPTION 2</strong></p>
+        <p>The second one is based on paying off half of the balance of
+the mortgage so whoever get’s the property only has to worry
+about the other half of the mortgage.</p>
+<p>Usually, people like to refinance the much lower balance, so it
+makes their mortgage payment much less – to make it easier
+for the survivor(s) to take It on the new debt.</p>
+
+<p><strong>🔺OPTION 3</strong></p>
+         <p>The 3rd option is based off the mortgage payment amount. </p>
+<p>It covers the full mortgage payment for 1, 2 or 3 years.</p>
+<p>So, when you pass away, your survivor(s) won’t have to worry about the mortgage payment for that timeframe.</p>
+<p>This provides them time to figure out whether they want to sell the home, keep it, rent it, etc... .giving them time to figure out how to take care of this new debt that could be a burden on them.
+</p>
+
+        <p><strong>🔺Tie Down</strong></p>
+        <p>Do those options make sense to you guys? Do you have any
+questions to far?</p>
+        <p><strong>🔺-Put together a plan-</strong></p>
+        <p>Perfect, let me put you on a brief hold so I can put the programs together.  I don’t have any fancy elevator music so it might be silent here for a second. Just do me a favor and grab your pen and paper, stay on the line and I will be back with you shortly to go over the numbers.</p>
+ <p class="script-instruction script-highlight">(Get the programs together mute your phone)</p> 
+<p class="script-instruction">
+  <a href="https://docs.google.com/spreadsheets/d/1w84OXjj9aosLLbz6kTpKrLkucGGiGVor/edit?usp=sharing&ouid=113541202851165482225&rtpof=true&sd=true" 
+     class="script-highlight" 
+     target="_blank">
+    https://docs.google.com/spreadsheets/d/1w84OXjj9aosLLbz6kTpKrLkucGGiGVor/edit?usp=sharing&ouid=113541202851165482225&rtpof=true&sd=true
+  </a>
+</p>   </div>
+
+<!-- PREMIUM CALCULATION SECTION -->
+<div class="script-section script-coverage">
+    <h3>5B. Premium Calculation</h3>
+    
+       
+        <!-- WHOLE LIFE OPTIONS COLUMN -->
+        <div class="column">
+            <h4>Whole Life Options (Payment Protector)</h4>
+            <div class="financial-info">
+                <div class="form-group">
+                    <label>Monthly Mortgage Payment:</label>
+                    <input type="text" id="premiumMonthlyPayment" placeholder="$" oninput="formatMoneyInput(this, true, event); updatePremiumCalculations()">
+                </div>
+                
+                <table id="premiumCalcSection" class="premium-table">
+                    <tr>
+                        <th>Option</th>
+                        <th>Coverage Amount</th>
+                        <th>Partner 1</th>
+                        <th>Partner 2</th>
+                        <th>Combined</th>
+                        <th>Plan Option</th>
+                    </tr>
+                    <!-- Standard Whole Life Options -->
+                    <tr>
+                        <td>3 Months</td>
+                        <td class="calculated" id="wlOption1Amount">$0</td>
+                        <td><input type="text" id="wlOption1PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(1)"></td>
+                        <td><input type="text" id="wlOption1PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(1)"></td>
+                        <td id="wlOption1Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6 Months</td>
+                        <td class="calculated" id="wlOption2Amount">$0</td>
+                        <td><input type="text" id="wlOption2PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(2)"></td>
+                        <td><input type="text" id="wlOption2PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(2)"></td>
+                        <td id="wlOption2Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9 Months</td>
+                        <td class="calculated" id="wlOption3Amount">$0</td>
+                        <td><input type="text" id="wlOption3PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(3)"></td>
+                        <td><input type="text" id="wlOption3PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(3)"></td>
+                        <td id="wlOption3Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1 Year</td>
+                        <td class="calculated" id="wlOption4Amount">$0</td>
+                        <td><input type="text" id="wlOption4PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(4)"></td>
+                        <td><input type="text" id="wlOption4PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(4)"></td>
+                        <td id="wlOption4Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>18 Months</td>
+                        <td class="calculated" id="wlOption5Amount">$0</td>
+                        <td><input type="text" id="wlOption5PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(5)"></td>
+                        <td><input type="text" id="wlOption5PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(5)"></td>
+                        <td id="wlOption5Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2 Years</td>
+                        <td class="calculated" id="wlOption6Amount">$0</td>
+                        <td><input type="text" id="wlOption6PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(6)"></td>
+                        <td><input type="text" id="wlOption6PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(6)"></td>
+                        <td id="wlOption6Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3 Years</td>
+                        <td class="calculated" id="wlOption7Amount">$0</td>
+                        <td><input type="text" id="wlOption7PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(7)"></td>
+                        <td><input type="text" id="wlOption7PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(7)"></td>
+                        <td id="wlOption7Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <!-- Custom Whole Life Option -->
+                    <tr>
+                        <td>
+                            <input type="number" id="wlCustomMonths" placeholder="Months" oninput="updatePremiumCalculations()" style="width: 70px;">
+                        </td>
+                        <td class="calculated" id="wlOption8Amount">$0</td>
+                        <td><input type="text" id="wlOption8PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(8)"></td>
+                        <td><input type="text" id="wlOption8PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateWlCombined(8)"></td>
+                        <td id="wlOption8Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option2">
+                                <option value="">--</option>
+                                <option value="w1">Opt 1</option>
+                                <option value="w2">Opt 2</option>
+                                <option value="w3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+		
+		<p></p>
+    <!-- TERM OPTIONS COLUMN -->
+        <div class="column">
+            <h4>Term Options (% of Loan)</h4>
+            <div class="financial-info">
+                <div class="form-group">
+                    <label>Mortgage Amount:</label>
+                    <input type="text" id="premiumMortgageAmount" placeholder="$" oninput="formatMoneyInput(this, true, event); updatePremiumCalculations()">
+                </div>
+                
+                <table id="premiumCalcSection" class="premium-table">
+                    <tr>
+                        <th>Option</th>
+                        <th>Coverage Amount</th>
+                        <th>Partner 1</th>
+                        <th>Partner 2</th>
+                        <th>Combined</th>
+                        <th>Plan Option</th>
+                    </tr>
+                    <!-- Standard Term Options -->
+                    <tr>
+                        <td>25%</td>
+                        <td class="calculated" id="termOption1Amount">$0</td>
+                        <td><input type="text" id="termOption1PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(1)"></td>
+                        <td><input type="text" id="termOption1PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(1)"></td>
+                        <td id="termOption1Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option1">
+                                <option value="">--</option>
+                                <option value="t1">Opt 1</option>
+                                <option value="t2">Opt 2</option>
+                                <option value="t3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>33%</td>
+                        <td class="calculated" id="termOption2Amount">$0</td>
+                        <td><input type="text" id="termOption2PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(2)"></td>
+                        <td><input type="text" id="termOption2PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(2)"></td>
+                        <td id="termOption2Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option1">
+                                <option value="">--</option>
+                                <option value="t1">Opt 1</option>
+                                <option value="t2">Opt 2</option>
+                                <option value="t3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>50%</td>
+                        <td class="calculated" id="termOption3Amount">$0</td>
+                        <td><input type="text" id="termOption3PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(3)"></td>
+                        <td><input type="text" id="termOption3PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(3)"></td>
+                        <td id="termOption3Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option1">
+                                <option value="">--</option>
+                                <option value="t1">Opt 1</option>
+                                <option value="t2">Opt 2</option>
+                                <option value="t3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>75%</td>
+                        <td class="calculated" id="termOption4Amount">$0</td>
+                        <td><input type="text" id="termOption4PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(4)"></td>
+                        <td><input type="text" id="termOption4PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(4)"></td>
+                        <td id="termOption4Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option1">
+                                <option value="">--</option>
+                                <option value="t1">Opt 1</option>
+                                <option value="t2">Opt 2</option>
+                                <option value="t3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>100%</td>
+                        <td class="calculated" id="termOption5Amount">$0</td>
+                        <td><input type="text" id="termOption5PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(5)"></td>
+                        <td><input type="text" id="termOption5PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(5)"></td>
+                        <td id="termOption5Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option1">
+                                <option value="">--</option>
+                                <option value="t1">Opt 1</option>
+                                <option value="t2">Opt 2</option>
+                                <option value="t3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <!-- Custom Term Option -->
+                    <tr>
+                        <td>
+                            <input type="number" id="termCustomPercent" placeholder="%" oninput="updatePremiumCalculations()" style="width: 50px;">
+                        </td>
+                        <td class="calculated" id="termOption6Amount">$0</td>
+                        <td><input type="text" id="termOption6PersonA" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(6)"></td>
+                        <td><input type="text" id="termOption6PersonB" placeholder="$" oninput="formatMoneyInput(this, true, event); calculateTermCombined(6)"></td>
+                        <td id="termOption6Combined">$0.00</td>
+                        <td>
+                            <select class="plan-option1">
+                                <option value="">--</option>
+                                <option value="t1">Opt 1</option>
+                                <option value="t2">Opt 2</option>
+                                <option value="t3">Opt 3</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p></p>
+</div>
+
+    <!-- THE CLOSE SECTION -->
+    <div class="script-section script-close">
+        <h3>6. The Close</h3>
+        <p class="script-instruction script-highlight">STICK TO THIS EXACTLY - BE DIRECT AND REMEMBER....YOU ARE THE EXPERT. GUIDE YOUR CLIENT!!</p>
+        
+        <p class="script-instruction">THANK YOU FOR HOLDING (CLIENT NAME). ARE YOU STILL WITH ME?</p>
+        
+        <p>OKAY PERFECT, SO THE SYSTEM CAME BACK WITH EXACTLY WHAT I THOUGHT IT WOULD...</p>
+		
+         <div class="fex-section">
+        <h4>IF PAYMENT PROTECTOR (FEX) (3,6,9 months or 1,2,3 years)</h4>
+        <p>Ok, so we’ll start with the least expensive first, so you don’t fall out of your chair— Just kidding.</p>
+                
+        <p class="script-instruction">So, for the 1 year of Mortgage Payment Protection, it’s $_____ per month
+(multiply the mtg payment x 12 for face amount)</p>
+<p class="script-instruction">For 1.5 years of Mortgage Payment Protection, its $_____ per month
+(multiply the mtg payment x 18 for face amount)
+</p>
+        <p class="script-instruction script-highlight"><strong>PRESENT 2 OPTIONS! DO NOT GIVE THE THIRD ONE!</strong></p>
+        
+        <div class="form-group">
+            <label class="script-question">Option 1:</label>
+            <input type="text" id="option1" placeholder="Option details" oninput="updateSummary()">
+        </div>
+        
+        <div class="form-group">
+            <label class="script-question">Option 2:</label>
+            <input type="text" id="option2" placeholder="Option details" oninput="updateSummary()">
+        </div>
+
+<div class="form-group">
+    <label class="script-question">Option 3:</label>
+    <input type="text" id="option3" placeholder="Option details" oninput="updateSummary()">
+</div>
+        
+        <p>“Based on those two plans, do either of those make more sense for you or do you want to see a 3rd plan?”
+</p>
+        
+        <p>• If they say no, ask “ok, so which plan works best for you to start with?” <b>(close the sale and begin the application process)</b>
+</p>
+ <p>• If they say yes, show 2 Year and 2.5 Year Mortgage Payment Protection options and ask again, “Which one of these now works for you?” close the sale and begin the application process</p>
+
+        <p><b>TIPS on Quoting and Closing:</b></p>
+<p>- If they want to see more options beyond the first 2 you
+show, and <u>you don’t</u> think it's going to be WAY outside of their budget show it to them.</p>
+<p>- If you know it will be way out of their price range, tell them:
+<em>“I’ll show it to you, but are you sitting down?..I don’t want you
+to have a heart attack because it might be kind of expensive.”</em></p>
+<p>- Once you tell them they will react positively or negatively,
+Either way jump right in and say, <b>“Ok so based off of this which one of these options works best for you?”</b></p>
+		
+		
+        <p class="script-instruction script-highlight"><strong>ANY BUYING SIGN... CLOSE IT AND BEGIN THE APP</strong></p>
+        <p>Perfect so I would assume you want the policy sent to (their address) if we're able to get you approved right? Or do you have a different mailing address?</p>
+		
+	
+		
+		
+        </div>
+        <div class="term-section">
+            <h4>IF GOING TERM (100%, 75%, 50% of mtg balance)</h4>
+            <p>Ok, so we will start with the least expensive first, so you don’t fall out of your chair – Just kidding</p>
+            
+            <p class="script-instruction">So, for 25% of your Mortgage Balance, it’s $_______ per month</p>
+<p class="script-instruction">For half of your Mortgage Balance, it’s $_______ per month
+</p>
+            <p class="script-highlight"><strong>(25%, 50%, 75%, 100%, ETC) GIVE 3 OPTIONS</strong></p>
+            <p class="script-highlight"><strong>START WITH THE LOWEST OPTION AND ONLY GIVE THEM 2 OUT OF 3 OF THE OPTIONS</strong></p>
+            
+            <div class="form-group">
+                <label class="script-question">Term Option 1:</label>
+                <input type="text" id="termOption1" placeholder="Option details" oninput="updateSummary()">
+            </div>
+            
+            <div class="form-group">
+                <label class="script-question">Term Option 2:</label>
+                <input type="text" id="termOption2" placeholder="Option details" oninput="updateSummary()">
+            </div>
+            
+<div class="form-group">
+    <label class="script-question">Term Option 3:</label>
+    <input type="text" id="termOption3" placeholder="Option details" oninput="updateSummary()">
+</div>
+
+            <p>“Based on those two plans, do either of those make more sense for you or do you want to see a 3rd plan?”
+</p>
+        
+        <p>• If they say no, ask “ok, so which plan works best for you to start with?” <b>(close the sale and begin the application process)</b>
+</p>
+ <p>• If they say yes, show them the full balance plan and ask again,
+“Which one of these now work for you?” close the sale and begin the application process
+</p>
+
+<p><b>TIPS on Quoting and Closing:</b></p>
+<p>- If they want to see more options beyond the first 2 you
+show, and <u>you don’t</u> think it's going to be WAY outside of their budget show it to them.</p>
+<p>- If you know it will be way out of their price range, tell them:
+<em>“I’ll show it to you, but are you sitting down?..I don’t want you
+to have a heart attack because it might be kind of expensive.”</em></p>
+<p>- Once you tell them they will react positively or negatively,
+Either way jump right in and say, <b>“Ok so based off of this which one of these options works best for you?”</b></p>
+
+            
+            <p class="script-instruction script-highlight"><strong>ANY BUYING SIGN... CLOSE IT AND BEGIN THE APP</strong></p>
+            <p>Perfect so I would assume you want the policy sent to (their address) if we're able to get you approved right? Or do you have a different mailing address?</p>
+			
+			
+		
+        </div>
+		
+		
+		<p>	Ok and what’s your email?</p>
+	<div class="form-group">
+                <label class="script-question">Primary Email Address:</label>
+                <input type="email" id="emailAddress1" placeholder="Email address" oninput="updateSummary()">
+            </div>
+			
+			
+		 <div id="secondaryEmailContainer" class="applicant-email hidden">
+            <label>Partner 2 Email Address:</label>
+             <input type="email" id="emailAddress2" placeholder="Email address" oninput="updateSummary()">
+        </div>	
+			
+<p>Ok great, we should be done in about 10-15 mins let me get
+this pulled up…… just a moment….</p>
+<p>Begin writing the application</p>
+    </div>
+
+    <!-- OBJECTION STAGE SECTION -->
+    <div class="script-section script-objections">
+        <h3>7. Objection Stage</h3>
+        <h4>Think about it</h4>
+        <p class="script-instruction script-highlight">MAIN REBUTTAL - "I NEED TO THINK ABOUT IT/ CAN WE TAKE TIME TO THINK ABOUT THIS/ ETC."</p>
+        
+        <p>Reply: 
+“Are you thinking about which option is best or if you need to get
+this at all? If you’re deciding which option to get, let’s just start
+with the lower option and you can call and increase it later. Does
+that work?”
+</p>
+        
+        <p>Discuss the value and ask them questions about what this
+coverage could do for their family</p>
+        
+        <h4>WHICH OPTION TO BEGIN WITH</h4>
+        <p>Absolutely, do you mind if I give you my professional opinion…? What everyone does in your situation is they just start with the plan that makes the most sense to them financially today. The plan you start with isn’t the plan you always have to have. You can always adjust it, all you need to do is call me and I’ll take care of it for you. So which plan is your gut telling you to go with?</p>
+ 
+        
+        <h4>WHETHER OR NOT THEY EVEN NEED THIS COVERAGE</h4>
+        <p>Okay now (clients name) If you were to pass away tomorrow (god forbid) do you think this coverage would be important for (beneficiary name?)</p>
+        
+        <p><strong>***IF THEY SAY "YES"..</strong></p>
+        <p>Okay And would (cheapest premium)  take food off your table every month? </p>
+        <p><strong>***IF THEY SAY "NO"...</strong> +CLOSE IT AND RUN THE APP+</p>
+        <p>Perfect so I would assume you want the policy sent to (their address) if we're able to get you approved right? Or do you have a different mailing address?</p>
+		
+		<h4>They don’t think it’s enough coverage for the price:</h4>
+<p>No problem but let me re-explain. The legacy you’re leaving behind for your family is the equity in your home NOT the insurance policy. The policy is going to protect your legacy. Does that make sense? </p>
+
+
+<h4>Is this PMI insurance? or I have it through the bank</h4>
+No PMI protects the bank if you default on your loan. This is the one that protects you and your family. (then continue script)
+
+
+<h4>Am I required to do this?</h4>
+<p>Yes, great question but Absolutely not, it’s not a law or anything because no big companies profit from this like health insurance, only you and your family benefits from this. Does that make sense? (then continue the process..)</p>
+<h4>How soon do I have to make this decision?</h4>
+<p>Great question, you aren't forced to do this… however if you passed away tomorrow (god forbid)  do you think it would be important for your (beneficiaries name) to have this coverage? Okay so which one of those options make the most sense to start with?</p>
+<h4>If they ask why do you need my social?</h4> 
+<p>It’s for the medical check so they can see your medications to see if we can get you approved and that’s what they match up with your death certificate when you die. (then continue)</p>
+		
+        
+        <div class="financial-info">
+            <h3>Driver License Information (Optional)</h3>
+            <div class="form-group">
+                <label>Partner 1 Driver License Number (Optional):</label>
+                <input type="text" id="partner1DriverLicense" placeholder="Driver License Number" oninput="updateSummary()">
+            </div>
+            <div class="form-group">
+                <label>Partner 1 Driver License State (Optional):</label>
+                <input type="text" id="partner1DriverLicenseState" placeholder="State" oninput="updateSummary()">
+            </div>
+            
+            <div id="partner2DriverLicenseContainer" class="form-group hidden">
+                <label>Partner 2 Driver License Number (Optional):</label>
+                <input type="text" id="partner2DriverLicense" placeholder="Driver License Number" oninput="updateSummary()">
+            </div>
+            
+            <div id="partner2DriverLicenseStateContainer" class="form-group hidden">
+                <label>Partner 2 Driver License State (Optional):</label>
+                <input type="text" id="partner2DriverLicenseState" placeholder="State" oninput="updateSummary()">
+            </div>
+
+            <h3>Social Security Number</h3>
+            <p><b>Always get social and banking last.</b></p>
+            <p>And then (Name) who is your primary care physician? Who do you see for your physicals or doctor’s visits? What hospital do you go to for check ups?</p>
+<p>When was the last time you saw them? Did everything check out okay? K perfect.</p>
+<p>Now the insurance carrier is going to check your Medical Information Bureau (MIB Report) using your Social. What’s your social sir? </p>
+<p>(If spouse) What’s your social ma’am?</p>
+<p>(Repeat it back to them)</p>
+
+            <div class="form-group">
+                <label class="script-question">Partner 1 Social Security Number:</label>
+                <input type="text" id="partner1SSN" placeholder="SSN" oninput="updateSummary()">
+            </div>
+            
+            <div id="partner2SSNContainer" class="form-group hidden">
+                <label class="script-question">Partner 2 Social Security Number:</label>
+                <input type="text" id="partner2SSN" placeholder="SSN" oninput="updateSummary()">
+            </div>
+
+            <h3>Bank Information</h3>
+            <div class="form-group">
+                <label class="script-question">FOR BANK INFO:</label> 
+				<p>So 3 things can happen from here</p>
+<p>Number 1 you get approved, number 2 it gets sent to underwriting and it can take a few days to through, and number 3 it gets declined, and if it gets declined we can always go back to the drawing board. </p>
+<p>If you were to get approved would you be using a checking or a savings account?</p>
+<p>Ok, and under what bank would that be?... And did you open that account up in (city) or where ?</p>
+<p>Ok and I have the routing number here as X</p>
+<p>Gotcha, and what's the corresponding account number?</p>
+
+                <input type="text" id="bankName" placeholder="Bank name" oninput="updateSummary()">
+            </div>
+            
+            <div class="form-group">
+                <label class="script-question">R#:</label>
+                <input type="text" id="rNumber" placeholder="Routing number" oninput="updateSummary()">
+            </div>
+            
+            <div class="form-group">
+                <label class="script-question">A#:</label>
+                <input type="text" id="aNumber" placeholder="Account number" oninput="updateSummary()">
+            </div>
+            
+            <p class="script-instruction script-highlight">I DO NOT have any side conversation during this time.</p>
+            
+            <div class="form-group">
+                <label class="script-question">How to tell them the DRAFT DATE: "So your first draft will come out upon approval, and then your recurring date will be (today's date example: 4th or 18th or the month) but after your first draft, you can change it to any day of the month you want.. You just need to call me."</label>
+                <input type="text" id="draftDate" placeholder="Draft date" oninput="updateSummary()">
+            </div>
+            
+            
+        </div>
+    </div>
+
+    <!-- SOLIDITY AT THE END SECTION -->
+    <div class="script-section">
+        <h3>Solidity at the end</h3>
+        <p class="script-instruction"><strong>I normally say this when the application is loading after signatures:</strong></p>
+        
+        <p>Okay (client's name) while it's loading, I'm going to give you your confirmation number, do you still have your pen and paper? the confirmation number is (last 4 of your social)</p>
+        
+        <p>The reason I give you this is because you're going to get 30 of those postcards in the mail, because after 30 days, your information goes to public record, so everyone is going to call you!</p>
+        
+        <p>I will be your only agent moving forward, and the reason I stress on this is because I've been doing this for a long time now, and I've had clients call me and say "someone called me and said you were fired" or "my policy lapsed" when it didn't!</p>
+        
+        <p>So I don't want you to get lied to, or anything, so always call or text me if you ever need anything!</p>
+		
+		
+		<p>Once app is done give your Name, Cell Phone Number, and
+Email to the client. Let them know the policy should arrive in the
+mail within the next 14 days.</p>
+<p>Let them know that if they call you to leave a voicemail and you’ll
+call them back. You’re helping other families.</p>
+<p>Just remember the insurance carrier is:</p>
+<p>Your Policy Number is: _______ (if known)</p>
+<p>The monthly premium is: _________</p>
+<p>“Just remember when you get your paperwork if you have any
+questions, call me please.”</p>
+        
+        <div class="form-group">
+            <label class="script-question">IF APPROVED:</label>
+            <select id="approvalStatus" onchange="updateSummary()">
+                <option value="approved">Approved</option>
+                <option value="underwriting">Underwriting</option>
+                <option value="declined">Declined</option>
+            </select>
+        </div>
+        
+        <div id="approvedMessage" class="form-group">
+            <p>Congratulations you were approved on the spot and you will get your policy in the mail 2-3 weeks, if you don't get it by then call me ok! Have a great day and thanks for your time.</p>
+        </div>
+        
+        <div id="underwritingMessage" class="form-group">
+            <p>Your application went into underwriting, it's no big deal, they'll give me an answer back within the next 2-5 business days and then I will call you! Have a great day and thanks for your time.</p>
+        </div>
+        
+        <div id="declinedMessage" class="form-group hidden">
+            <p>Your application went into underwriting, it's no big deal, they'll give me an answer back within the next 2-5 business days and then I will call you! Have a great day and thanks for your time.</p>
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="button-group">
+        <button id="saveToCrmBtn" class="secondary">Save to CRM</button>
+        <span id="copyStatus">Copied to clipboard!</span>
+    </div>
+
+
+
+<script>
+
+// Track which option each row is assigned to
+const rowAssignments = {
+    term: {},
+    wl: {}
+};
+
+function populateCloseOptions(sourceInput) {
+    const isTerm = sourceInput.id.includes('termOption');
+    const tableType = isTerm ? 'term' : 'wl';
+    const optionNum = sourceInput.id.match(/\d+/)[0];
+    const row = sourceInput.closest('tr');
+    
+    // Find which option this row is assigned to (if any)
+    let assignedOption = null;
+    for (const [option, assignedRow] of Object.entries(rowAssignments[tableType])) {
+        if (assignedRow === row) {
+            assignedOption = option;
+            break;
+        }
+    }
+    
+    // If this row is assigned to an option, update that specific close field
+    if (assignedOption) {
+        const closeFieldId = isTerm ? `termOption${assignedOption}` : `option${assignedOption}`;
+        const closeField = document.getElementById(closeFieldId);
+        
+        if (closeField) {
+            const coverageAmount = row.cells[1].textContent.trim();
+            const combinedPremium = row.cells[4].textContent.trim();
+            
+            closeField.value = `${row.cells[0].textContent.trim()}, ${coverageAmount}, ${combinedPremium}`;
+        }
+    }
+    
+    updateSummary();
+}
+
+// Modified option select handler
+function setupOptionSelectListeners() {
+    document.querySelectorAll('.plan-option1, .plan-option2').forEach(select => {
+        select.addEventListener('change', function() {
+            const row = this.closest('tr');
+            const isTerm = this.classList.contains('plan-option1');
+            const tableType = isTerm ? 'term' : 'wl';
+            const optionValue = this.value;
+            
+            // Clear previous assignment for this option
+            for (const [option, assignedRow] of Object.entries(rowAssignments[tableType])) {
+                if (assignedRow === row) {
+                    delete rowAssignments[tableType][option];
+                    break;
+                }
+            }
+            
+            // Set new assignment if an option was selected
+            if (optionValue) {
+                const optionNum = optionValue.match(/\d+/)[0];
+                rowAssignments[tableType][optionNum] = row;
+                
+                // Update the corresponding close field immediately
+                const sourceInput = row.querySelector(`[id$="PersonA"]`);
+                if (sourceInput) populateCloseOptions(sourceInput);
+            }
+            
+            // Update row styling
+            row.classList.remove('opt1', 'opt2', 'opt3');
+            if (optionValue.includes("1")) row.classList.add('opt1');
+            if (optionValue.includes("2")) row.classList.add('opt2');
+            if (optionValue.includes("3")) row.classList.add('opt3');
+        });
+    });
+}
+
+// Initialize all listeners
+document.addEventListener('DOMContentLoaded', function() {
+    setupOptionSelectListeners();
+    
+    // Set up input listeners for all premium fields
+    document.querySelectorAll('[id$="PersonA"], [id$="PersonB"]').forEach(input => {
+        input.addEventListener('input', function(e) {
+            const optionNum = this.id.match(/\d+/)[0];
+            formatMoneyInput(this, true, e);
+            
+            if (this.id.includes('termOption')) {
+                calculateTermCombined(optionNum);
+            } else {
+                calculateWlCombined(optionNum);
+            }
+            
+            populateCloseOptions(this);
+        });
+    });
+});
+
+
+
+    // Format money with commas and round to nearest 500 (for coverage amounts only)
+    function formatCoverageAmount(amount) {
+        // Round to nearest 500
+        const rounded = Math.ceil(amount / 500) * 500;
+        // Format with commas
+        return '$' + rounded.toLocaleString('en-US', {maximumFractionDigits: 0});
+    }
+
+    // Format money with commas (for premiums - shows exact decimals)
+    function formatPremium(amount) {
+        // Format with exactly 2 decimal places
+        return '$' + amount.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+    
+    // Format money input fields
+    function formatMoneyInput(input, allowDecimal = false, event) {
+        // Save selection start and end
+        const selectionStart = input.selectionStart;
+        const selectionEnd = input.selectionEnd;
+        const originalValue = input.value;
+        
+        // Check if backspace or delete was pressed
+        const isDeletion = event && (
+            event.inputType === 'deleteContentBackward' || 
+            event.inputType === 'deleteContentForward'
+        );
+        
+        // If backspace/delete at start, allow full deletion
+        if (isDeletion && selectionStart === 0 && selectionEnd === originalValue.length) {
+            input.value = '';
+            return 0;
+        }
+        
+        // Get the raw value (before any formatting)
+        let value = originalValue;
+        
+        // Remove all non-numeric characters except decimal point if allowed
+        if (allowDecimal) {
+            value = value.replace(/[^0-9.]/g, '');
+            
+            // Ensure only one decimal point
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+        } else {
+            value = value.replace(/[^0-9]/g, '');
+        }
+        
+        // If we're in the middle of typing a decimal, don't format yet
+        if (allowDecimal && value.includes('.') && 
+            (selectionStart > value.indexOf('.') || originalValue.endsWith('.'))) {
+            // Just add $ prefix if not already there
+            if (!originalValue.startsWith('$')) {
+                input.value = '$' + value;
+                input.setSelectionRange(selectionStart + 1, selectionEnd + 1);
+            }
+            return parseFloat(value) || 0;
+        }
+        
+        // Convert to number
+        const numValue = parseFloat(value) || 0;
+        
+        // Format with commas (and decimals if allowed)
+        if (allowDecimal) {
+            // Check if the original input had a decimal point
+            const hadDecimal = originalValue.includes('.');
+            
+            // Format with 2 decimal places only if we had a complete number
+            if (hadDecimal && parts[1] && parts[1].length >= 2) {
+                input.value = '$' + numValue.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            } else {
+                // Otherwise, just add $ and commas
+                input.value = '$' + numValue.toLocaleString('en-US', {
+                    maximumFractionDigits: 20 // Allow any number of decimal places during typing
+                });
+            }
+        } else {
+            input.value = '$' + numValue.toLocaleString('en-US', {maximumFractionDigits: 0});
+        }
+        
+        // Restore cursor position
+        let newCursorPos = selectionStart;
+        
+        // If we added characters, adjust cursor position
+        if (input.value.length > originalValue.length) {
+            newCursorPos += (input.value.length - originalValue.length);
+        }
+        // If we removed characters, adjust cursor position
+        else if (input.value.length < originalValue.length) {
+            newCursorPos -= (originalValue.length - input.value.length);
+        }
+        
+        // Ensure cursor stays within bounds
+        newCursorPos = Math.max(0, Math.min(newCursorPos, input.value.length));
+        input.setSelectionRange(newCursorPos, newCursorPos);
+        
+        return numValue;
+    }
+    
+    // Parse money input value (preserves exact decimal values)
+    function parseMoneyInput(input) {
+        const value = input.value.replace(/[^0-9.]/g, '');
+        return value ? parseFloat(value) : 0;
+    }
+
+    // Function to sync mortgage values from Client Worksheet
+    function syncMortgageValues() {
+        const mortgageAmount = document.getElementById('mortgageAmount').value;
+        const monthlyPayment = document.getElementById('mortgagePaymentDetails').value;
+        
+        if (mortgageAmount) {
+            const amount = parseFloat(mortgageAmount.replace(/[^0-9.]/g, '')) || 0;
+            document.getElementById('premiumMortgageAmount').value = '$' + amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        
+        if (monthlyPayment) {
+            const amount = parseFloat(monthlyPayment.replace(/[^0-9.]/g, '')) || 0;
+            document.getElementById('premiumMonthlyPayment').value = '$' + amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        
+        updatePremiumCalculations();
+    }
+    
+    function updatePremiumCalculations() {
+        // Get values from premium section inputs
+        const mortgageAmount = parseMoneyInput(document.getElementById('premiumMortgageAmount'));
+        const monthlyPayment = parseMoneyInput(document.getElementById('premiumMonthlyPayment'));
+        const customPercent = parseFloat(document.getElementById('termCustomPercent').value) || 0;
+        const customMonths = parseFloat(document.getElementById('wlCustomMonths').value) || 0;
+        
+        // Update term options
+        const termPercentages = [0.25, 0.33, 0.5, 0.75, 1, customPercent/100];
+        termPercentages.forEach((percent, index) => {
+            const amount = mortgageAmount * percent;
+            document.getElementById(`termOption${index+1}Amount`).textContent = formatCoverageAmount(amount);
+        });
+        
+        // Update whole life options
+        const wlMonths = [3, 6, 9, 12, 18, 24, 36, customMonths];
+        wlMonths.forEach((months, index) => {
+            const amount = monthlyPayment * months;
+            document.getElementById(`wlOption${index+1}Amount`).textContent = formatCoverageAmount(amount);
+        });
+        
+        // Auto-update the summary box when premium calculations change
+        updateSummary();
+    }
+    
+    function calculateTermCombined(optionNum) {
+        const personA = parseMoneyInput(document.getElementById(`termOption${optionNum}PersonA`));
+        const personB = parseMoneyInput(document.getElementById(`termOption${optionNum}PersonB`));
+        document.getElementById(`termOption${optionNum}Combined`).textContent = formatPremium(personA + personB);
+        
+        // Auto-update the summary box when values change
+        updateSummary();
+    }
+    
+    function calculateWlCombined(optionNum) {
+        const personA = parseMoneyInput(document.getElementById(`wlOption${optionNum}PersonA`));
+        const personB = parseMoneyInput(document.getElementById(`wlOption${optionNum}PersonB`));
+        document.getElementById(`wlOption${optionNum}Combined`).textContent = formatPremium(personA + personB);
+        
+        // Auto-update the summary box when values change
+        updateSummary();
+    }
+    
+    // Add event listeners to original mortgage inputs to sync values
+    document.getElementById('mortgageAmount').addEventListener('input', syncMortgageValues);
+    document.getElementById('mortgagePaymentDetails').addEventListener('input', syncMortgageValues);
+    
+    // Initialize calculations on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        syncMortgageValues();
+        
+        // Update all input event listeners to pass the event object
+        document.querySelectorAll('input[oninput*="formatMoneyInput"]').forEach(input => {
+            const originalOnInput = input.getAttribute('oninput');
+            input.setAttribute('oninput', originalOnInput.replace('formatMoneyInput(this', 'formatMoneyInput(this, true, event'));
+        });
+    });
+</script>
+
+
+
+    <script>
+        // Height/Weight Chart Data
+        const maxWeights = {
+            '4-8': 185,   '4-9': 193,   '4-10': 198,  '4-11': 207,
+            '5-0': 212,   '5-1': 221,   '5-2': 225,   '5-3': 234,
+            '5-4': 243,   '5-5': 250,   '5-6': 259,   '5-7': 265,
+            '5-8': 274,   '5-9': 281,   '5-10': 292,  '5-11': 298,
+            '6-0': 307,   '6-1': 314,   '6-2': 325,   '6-3': 336,
+            '6-4': 342,   '6-5': 353,   '6-6': 360
+        };
+
+        function addMedication(prefix) {
+            const container = document.getElementById(`${prefix}Medications`);
+            const newRow = document.createElement('div');
+            newRow.className = 'medication-row';
+            newRow.innerHTML = `<input type="text" placeholder="Medication name" oninput="updateSummary()">`;
+            container.appendChild(newRow);
+        }
+		
+		function formatDateMMDDYYYY(dateStr) {
+    if (!dateStr) return 'Not provided';
+    const [year, month, day] = dateStr.split('-');
+    if (!year || !month || !day) return dateStr; // fallback if not in yyyy-mm-dd
+    return `${month}/${day}/${year}`;
+}
+
+        
+        // Function to update the floating summary box
+        function updateSummary() {
+            const summaryContent = document.getElementById('summaryContent');
+            const applicationType = document.querySelector('input[name="applicationType"]:checked').value;
+            
+            // Get basic info
+            const primaryName = document.getElementById('primaryFullName').value || 'Not provided';
+            const partner1Gender = document.getElementById('partner1GenderSelect').value === 'male' ? 'Male' : 'Female';
+            const secondaryName = document.getElementById('secondaryFullName').value || 'Not provided';
+            const partner2Gender = document.getElementById('partner2Gender').value === 'male' ? 'Male' : 'Female';
+            const rawSSN = document.getElementById('partner1SSN').value;
+const partner1SSN = rawSSN 
+    ? rawSSN.replace(/\D/g, '').replace(/^(\d{3})(\d{2})(\d{4})$/, '$1-$2-$3') 
+    : 'Not provided';
+
+			
+			
+			const rawSSN2 = document.getElementById('partner2SSN').value;
+const partner2SSN = rawSSN2 
+    ? rawSSN2.replace(/\D/g, '').replace(/^(\d{3})(\d{2})(\d{4})$/, '$1-$2-$3') 
+    : 'Not provided';
+			
+            
+            // Get mortgage info
+            const mortgageAmount = document.getElementById('mortgageAmount').value || 'N/A';
+            const homePurchaseType = document.getElementById('homePurchaseType').value || 'N/A';
+            const mortgageTerm = document.getElementById('mortgageTerm').value || 'N/A';
+            const monthlyPayment = document.getElementById('monthlyPayment').value || 'N/A';
+            const mortgagePaymentDetails = document.getElementById('mortgagePaymentDetails').value || 'N/A';
+            
+            // Get income info
+            const occupation = document.getElementById('occupation').value || 'N/A';
+            const partner2Occupation = document.getElementById('partner2Occupation').value || 'N/A';
+            const monthlyIncome = document.getElementById('monthlyIncome').value || 'N/A';
+            const partner2MonthlyIncome = document.getElementById('partner2MonthlyIncome').value || 'N/A';
+            
+            // Get beneficiary info
+            const beneficiaryName = document.getElementById('beneficiaryName').value || 'N/A';
+            const beneficiaryPlan = document.getElementById('beneficiaryPlan').value || 'N/A';
+            const beneficiaryLocation = document.getElementById('beneficiaryLocation').value || 'N/A';
+            
+
+            // Get coverage info
+            const option1 = document.getElementById('option1').value || 'N/A';
+            const option2 = document.getElementById('option2').value || 'N/A';
+            const option3 = document.getElementById('option3').value || 'N/A';
+            const termOption1 = document.getElementById('termOption1').value || 'N/A';
+            const termOption2 = document.getElementById('termOption2').value || 'N/A';
+            const termOption3 = document.getElementById('termOption3').value || 'N/A';
+
+
+            // Get bank info
+            const bankName = document.getElementById('bankName').value || 'N/A';
+            const rNumber = document.getElementById('rNumber').value || 'N/A';
+            const aNumber = document.getElementById('aNumber').value || 'N/A';
+            const draftDate = document.getElementById('draftDate').value || 'N/A';
+            
+            // Get approval status
+            const approvalStatus = document.getElementById('approvalStatus').value || 'Pending';
+            
+            // Get partner 1 health data
+            const partner1Data = getApplicantData('partner1');
+            const partner1HealthSummary = formatHealthSummary(partner1Data, 'Partner 1');
+            
+            // Get partner 2 health data if applicable
+            let partner2HealthSummary = '';
+            if (applicationType === 'partners') {
+                const partner2Data = getApplicantData('partner2');
+                partner2HealthSummary = formatHealthSummary(partner2Data, 'Partner 2');
+            }
+            
+            // Get risk assessment results if available
+            let partner1RiskResults = '';
+            let partner2RiskResults = '';
+            let combinedRiskResults = '';
+            
+            if (document.getElementById('results') && !document.getElementById('results').classList.contains('hidden')) {
+                partner1RiskResults = formatRiskResults('partner1');
+                
+                if (applicationType === 'partners') {
+                    partner2RiskResults = formatRiskResults('partner2');
+                }
+                
+                combinedRiskResults = formatRiskResults('combined');
+            }
+            
+            // Build the summary HTML
+            let summaryHTML = `
+                <div class="summary-section">
+                    <div class="summary-label">Application Type:</div>
+                    <div class="summary-value">${applicationType === 'solo' ? 'Solo' : 'Partners'}</div>
+                </div>
+				
+				
+				
+				<div class="summary-section">
+                    <div class="summary-label">Beneficiary:</div>
+                    <div class="summary-value">
+                        <strong>Name:</strong> ${beneficiaryName}<br>
+                        <strong>Plan:</strong> ${beneficiaryPlan}<br>
+                        <strong>Location:</strong> ${beneficiaryLocation}
+                    </div>
+                </div>    
+				
+				<div class="summary-section">
+                    <div class="summary-label">Mortgage Address:</div>
+                    <div class="summary-value">
+                        ${document.getElementById('mortgageAddress').value || 'Not provided'}
+                    </div>
+                </div>
+                
+                <div class="summary-section" style="background: #fffde7; padding: 16px; border-radius: 12px;">
+                    <div class="summary-label">Mortgage Info:</div>
+                    <div class="summary-value">
+                        <strong>Mortgage Amount:</strong> $${mortgageAmount}<br>
+						<strong>Monthly Mortgage Payment:</strong> $${mortgagePaymentDetails}<br>
+                        <strong>Type:</strong> ${homePurchaseType}<br>
+                        <strong>Term:</strong> ${mortgageTerm} years<br>
+                        Monthly Payment: $${monthlyPayment}<br>
+                    </div>
+                </div>
+                
+                
+
+                            
+                <div class="summary-section" style="background: #d4f8e8; padding: 16px; border-radius: 12px;">
+                    <div class="summary-label">Income Info:</div>
+                    <div class="summary-value">
+                        <strong>Primary Occupation:</strong> ${occupation}<br>
+                        <strong>Primary Monthly Income:</strong> $${monthlyIncome}
+                        ${applicationType === 'partners' ? `<br><strong>Partner 2 Occupation:</strong> ${partner2Occupation}<br><strong>Partner 2 Monthly Income:</strong> $${partner2MonthlyIncome}` : ''}
+                    </div>
+                </div>
+                
+                <div class="summary-section" style="background: #d0eaff; padding: 16px; border-radius: 12px;">
+                    <div class="summary-label">Primary Applicant:</div>
+                    <div class="summary-value">
+                        <strong>Full Name:</strong> ${primaryName} (${partner1Gender})<br>
+						<strong>DOB:</strong> ${formatDateMMDDYYYY(document.getElementById('partner1Dob').value)}<br>
+                        <strong>SSN:</strong> ${partner1SSN}<br>                  
+                        <strong>Driver License:</strong> ${document.getElementById('partner1DriverLicense').value || 'Not provided'}, ${document.getElementById('partner1DriverLicenseState').value || 'Not provided'}<br>
+						 <strong>${applicationType === 'solo' ? 'Applicant' : 'Partner 1'}'s Email:</strong> ${document.getElementById('emailAddress1').value || 'Not provided'}
+                    </div>
+                </div>
+                
+                <div class="summary-section" style="background: #d0eaff; padding: 16px; border-radius: 12px;">
+                    <div class="summary-label">${applicationType === 'solo' ? 'Applicant' : 'Partner 1'} Health:</div>
+                    <div class="summary-value">
+                        ${partner1HealthSummary}
+                    </div>
+                </div>
+                
+                ${applicationType === 'partners' ? `
+                <div class="summary-section" style="background: #ffe4ec; padding: 16px; border-radius: 12px;">
+                    <div class="summary-label" style="color: #d16ba5;">Secondary Applicant:</div>
+                    <div class="summary-value">
+                        <strong>Full Name:</strong> ${secondaryName} (${partner2Gender})<br>
+                        <strong>DOB:</strong> ${formatDateMMDDYYYY(document.getElementById('partner2Dob').value)}<br>
+						<strong>SSN:</strong> ${partner2SSN}<br>
+                        <strong>Driver License:</strong> ${document.getElementById('partner2DriverLicense').value || 'Not provided'}, ${document.getElementById('partner2DriverLicenseState').value || 'Not provided'}<br>
+						<strong>Partner 2's Email:</strong> ${document.getElementById('emailAddress2').value || 'Not provided'}
+                    </div>
+                </div>
+                ` : ''}                
+                ${applicationType === 'partners' ? `
+                <div class="summary-section" style="background: #ffe4ec; padding: 16px; border-radius: 12px;">
+                    <div class="summary-label" style="color: #d16ba5;">Partner 2 Health:</div>
+                    <div class="summary-value">
+                        ${partner2HealthSummary}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${partner1RiskResults ? `
+                <div class="summary-section">
+                    <div class="summary-label">${applicationType === 'solo' ? 'Applicant' : 'Partner 1'} Risk Assessment:</div>
+                    <div class="summary-value">
+                        ${partner1RiskResults}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${partner2RiskResults ? `
+                <div class="summary-section">
+                    <div class="summary-label">Partner 2 Risk Assessment:</div>
+                    <div class="summary-value">
+                        ${partner2RiskResults}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${combinedRiskResults ? `
+                <div class="summary-section">
+                    <div class="summary-label">Combined Recommendation:</div>
+                    <div class="summary-value">
+                        ${combinedRiskResults}
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="summary-section">
+                    <div class="summary-label">Coverage Options</div>
+                    <div class="summary-value">
+                        <strong>FE Option 1:</strong> ${option1}<br>
+                        <strong>FE Option 2:</strong> ${option2}<br>
+                        <strong>FE Option 3:</strong> ${option3}<br>
+                        <strong>Term Option 1:</strong> ${termOption1}<br>
+                        <strong>Term Option 2:</strong> ${termOption2}<br>
+                        <strong>Term Option 3:</strong> ${termOption3}
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <div class="summary-label">Bank Info:</div>
+                    <div class="summary-value">
+                        <strong>Bank:</strong> ${bankName}<br>
+                        <strong>Routing #:</strong> ${rNumber}<br>
+                        <strong>Account #:</strong> ${aNumber}<br>
+                        <strong>Draft Date:</strong> ${draftDate}
+                    </div>
+                </div>
+                
+                <div class="summary-section">
+                    <div class="summary-label">Contact Info:</div>
+                    <div class="summary-value">
+                        <strong>${applicationType === 'solo' ? 'Applicant' : 'Partner 1'}'s Email:</strong> ${document.getElementById('emailAddress1').value || 'Not provided'}
+                    </div>
+					
+					 ${applicationType === 'partners' ? `
+               
+                   
+                    <div class="summary-value">
+                         <strong>Partner 2's Email:</strong> ${document.getElementById('emailAddress2').value || 'Not provided'}
+                    </div>
+                </div>
+                ` : ''}
+					
+                </div>
+                
+				
+				
+				
+				
+                <div class="summary-section">
+                    <div class="summary-label">Status:</div>
+                    <div class="summary-value"><strong>${approvalStatus}</strong></div>
+                </div>
+            `;
+            
+            summaryContent.innerHTML = summaryHTML;
+        }
+        
+       function formatRiskResults(prefix) {
+            const riskClassElement = document.getElementById(`${prefix}RiskClass`);
+            const toolElement = document.getElementById(`${prefix}Tool`);
+            const optionsElement = document.getElementById(`${prefix}Options`);
+            const reasoningElement = document.getElementById(`${prefix}Reasoning`);
+            
+            if (!riskClassElement || !toolElement) return '';
+            
+            let toolHtml = toolElement.innerHTML;
+            // Replace TOOLKIT FE link
+            toolHtml = toolHtml.replace('TOOLKIT FE', '<a href="https://app.insurancetoolkits.com/fex/quoter" target="_blank" class="tool-link">TOOLKIT FE</a>');
+            // Replace TOOLKIT TERM link
+            toolHtml = toolHtml.replace('TOOLKIT TERM', '<a href="https://app.insurancetoolkits.com/term/quoter" target="_blank" class="tool-link">TOOLKIT TERM</a>');
+            
+            let html = `
+                <div class="risk-result">
+                    <div class="risk-result-title">${riskClassElement.innerHTML}</div>
+                    <div>${toolHtml}</div>
+            `;
+            
+            if (optionsElement && !optionsElement.classList.contains('hidden')) {
+                html += `<div>${optionsElement.innerHTML}</div>`;
+            }
+            
+            if (reasoningElement && reasoningElement.innerHTML.trim() !== '') {
+                html += `<div>${reasoningElement.innerHTML}</div>`;
+            }
+            
+            html += `</div>`;
+            
+            return html;
+        }
+        
+        function formatHealthSummary(data, prefix) {
+            // Get all medication inputs
+            const medicationInputs = document.querySelectorAll(`#${data.prefix}Medications input`);
+            const medications = Array.from(medicationInputs)
+                .map(input => input.value.trim())
+                .filter(val => val !== '');
+            
+            // Format DOB
+            const dobInput = document.getElementById(`${data.prefix}Dob`);
+            const dob = dobInput ? dobInput.value : 'Not provided';
+			const formattedDob = formatDateMMDDYYYY(dob);
+            
+            let summary = `
+                <strong>Age:</strong> ${data.age}<br>
+                <strong>DOB:</strong> ${formattedDob}<br>
+                <strong>Height:</strong> ${data.feet}'${data.inches}"<br>
+                <strong>Weight:</strong> ${data.weight} lbs<br>
+                <strong>Smoker:</strong> ${data.smoker === 'yes' ? 'Yes' : 'No'}<br>
+                <strong>Medications (${medications.length}):</strong><br>
+                <div class="medication-list">
+                    ${medications.length > 0 ? medications.map(med => `• ${med}`).join('<br>') : 'None'}
+                </div>
+                <strong>Knockout Conditions:</strong> ${data.knockouts.length > 0 ? data.knockouts.join(', ') : 'None'}
+            `;
+            
+            return summary;
+        }
+        
+        function determineRiskAndTool(data) {
+            const result = { 
+                riskClass: '', 
+                tool: '', 
+                notes: [],
+                options: [],
+                reasoning: []
+            };
+
+            // Age validation
+            if (data.age < 18 || data.age > 89) {
+                result.riskClass = 'DECLINED';
+                result.tool = 'Age outside 18-89 range';
+                result.reasoning.push('Applicant age is outside the acceptable range (18-89)');
+                return result;
+            }
+
+            // 1. Impaired Class - Any knockout
+            if (data.knockouts.length > 0) {
+                result.riskClass = 'Impaired';
+                result.tool = 'TOOLKIT FE (only option)';
+               result.toolLink = 'https://app.insurancetoolkits.com/fex/quoter'; // Add this line
+
+                result.reasoning.push('Knockout condition(s) detected: ' + data.knockouts.join(', '));
+                result.reasoning.push('Impaired risk class requires TOOLKIT FE');
+                return result;
+            }
+
+            // Check height/weight
+            const heightKey = `${data.feet}-${data.inches}`;
+            const maxWeight = maxWeights[heightKey];
+            const isOverweight = maxWeight && data.weight > maxWeight;
+            const weightPercentageOver = isOverweight ? 
+                ((data.weight - maxWeight) / maxWeight) * 100 : 0;
+
+            // >20% over → Impaired
+            if (isOverweight && weightPercentageOver > 20) {
+                result.riskClass = 'Impaired';
+                result.tool = 'TOOLKIT FE (only option)';
+               result.toolLink = 'https://app.insurancetoolkits.com/fex/quoter'; // Add this line
+                result.reasoning.push(`Weight exceeds maximum by >20% (max ${maxWeight} lbs for ${data.feet}'${data.inches}")`);
+                result.reasoning.push('Impaired risk class due to weight requires TOOLKIT FE');
+                return result;
+            }
+
+            // 2. Preferred Class
+            if (!isOverweight && data.medicationCount <= 3) {
+                result.riskClass = 'Preferred';
+                
+                // Age 50-65: Can choose either Term or FE
+                if (data.age >= 50 && data.age <= 65) {
+                    result.tool = 'CO-PILOT TERM or FE';
+                    result.options = ['CO-PILOT TERM', 'CO-PILOT FE'];
+                    result.reasoning.push('Preferred risk class with age 50-65 qualifies for both TERM and FE options');
+                } 
+                // Age <50: Only Term if ≤65
+                else if (data.age <= 65) {
+                    result.tool = 'CO-PILOT TERM';
+                    result.reasoning.push('Preferred risk class with age <50 qualifies for TERM option');
+                } 
+                // Age 66-85: Only FE
+                else if (data.age >= 50 && data.age <= 85) {
+                    result.tool = 'CO-PILOT FE';
+                    result.reasoning.push('Preferred risk class with age 66-85 qualifies for FE option');
+                } else {
+                    result.riskClass = 'Standard';
+                    result.reasoning.push('Age outside Preferred range');
+                }
+                return result;
+            }
+
+            // 3. Standard Class
+            result.riskClass = 'Standard';
+            
+            if (!isOverweight) {
+                // Within H/W chart → Toolkit Term
+                result.tool = 'TOOLKIT TERM';
+                result.toolLink = 'https://app.insurancetoolkits.com/term/quoter'; // Add this line
+
+                result.reasoning.push('Standard risk class within height/weight chart qualifies for TOOLKIT TERM');
+            } 
+            else {
+                // ≤20% over → Co-Pilot Term (+20%)
+                result.tool = 'CO-PILOT TERM (+20%)';
+                result.reasoning.push(`Standard risk class with weight exceeding maximum by ${weightPercentageOver.toFixed(1)}% qualifies for CO-PILOT TERM with +20% rate adjustment`);
+            }
+
+            // Age 20-65 can choose both
+            if (data.age >= 20 && data.age <= 65) {
+                result.tool = 'TOOLKIT TERM or CO-PILOT TERM (+20%)';
+                result.options = ['TOOLKIT TERM', 'CO-PILOT TERM (+20%)'];
+                result.reasoning.push('Age 20-65 qualifies for both TERM options');
+            }
+
+            return result;
+        }
+
+        // New function to gather all data for CRM export
+        function gatherDataForCRM() {
+            const applicationType = document.querySelector('input[name="applicationType"]:checked').value;
+            const partner1Gender = document.getElementById('partner1GenderSelect').value || 'Not provided';
+            const primaryName = document.getElementById('primaryFullName').value || 'Not provided';
+            const secondaryName = document.getElementById('secondaryFullName').value || 'Not provided';
+            const partner2Gender = document.getElementById('partner2Gender').value || 'Not provided';
+
+			
+			const rawSSN = document.getElementById('partner1SSN').value;
+const partner1SSN = rawSSN 
+    ? rawSSN.replace(/\D/g, '').replace(/^(\d{3})(\d{2})(\d{4})$/, '$1-$2-$3') 
+    : 'Not provided';
+
+			
+			
+			const rawSSN2 = document.getElementById('partner2SSN').value;
+const partner2SSN = rawSSN2 
+    ? rawSSN2.replace(/\D/g, '').replace(/^(\d{3})(\d{2})(\d{4})$/, '$1-$2-$3') 
+    : 'Not provided';
+            
+            const partner1Data = getApplicantData('partner1');
+            let partner2Data = null;
+            
+            if (applicationType === 'partners') {
+                partner2Data = getApplicantData('partner2');
+            }
+
+            // Get results data
+            const partner1RiskClass = document.getElementById('partner1RiskClass').textContent || 'Not calculated';
+            const partner1Tool = document.getElementById('partner1Tool').textContent || 'Not calculated';
+            const partner1Options = document.getElementById('partner1Options').textContent || 'None';
+            const partner1Reasoning = document.getElementById('partner1Reasoning').textContent || 'None';
+            
+            let partner2RiskClass = 'N/A';
+            let partner2Tool = 'N/A';
+            let partner2Options = 'N/A';
+            let partner2Reasoning = 'N/A';
+            
+            if (applicationType === 'partners') {
+                partner2RiskClass = document.getElementById('partner2RiskClass').textContent || 'Not calculated';
+                partner2Tool = document.getElementById('partner2Tool').textContent || 'Not calculated';
+                partner2Options = document.getElementById('partner2Options').textContent || 'None';
+                partner2Reasoning = document.getElementById('partner2Reasoning').textContent || 'None';
+            }
+            
+            const combinedRiskClass = document.getElementById('combinedRiskClass').textContent || 'Not calculated';
+            const combinedTool = document.getElementById('combinedTool').textContent || 'Not calculated';
+            const combinedOptions = document.getElementById('combinedOptions').textContent || 'None';
+            const combinedReasoning = document.getElementById('combinedReasoning').textContent || 'None';
+
+            // Format the data
+            let crmData = `=== UNITRUST MORTGAGE PROTECTION APPLICATION ===\n`;
+            crmData += `Application Type: ${applicationType === 'solo' ? 'Solo' : 'Partners'}\n`;
+            crmData += `Primary Applicant Name: ${primaryName}\n`;
+            crmData += `Primary Applicant Gender: ${partner1Gender === 'male' ? 'Male' : 'Female'}\n`;
+            crmData += `Primary Applicant SSN: ${partner1SSN}\n`;
+			crmData += `Primary Applicant DOB: ${formatDateMMDDYYYY(document.getElementById('partner1Dob').value)}\n`;
+            crmData += `Primary Driver License: ${document.getElementById('partner1DriverLicense').value || 'N/A'}, ${document.getElementById('partner1DriverLicenseState').value || 'N/A'}\n`;
+            
+            if (applicationType === 'partners') {
+                crmData += `Secondary Applicant Name: ${secondaryName}\n`;
+                crmData += `Secondary Applicant Gender: ${partner2Gender === 'male' ? 'Male' : 'Female'}\n`;
+                crmData += `Secondary Applicant SSN: ${partner2SSN}\n`;
+				crmData += `Secondary Applicant DOB: ${formatDateMMDDYYYY(document.getElementById('partner2Dob').value)}\n`;
+                crmData += `Secondary Driver License: ${document.getElementById('partner2DriverLicense').value || 'N/A'}, ${document.getElementById('partner2DriverLicenseState').value || 'N/A'}\n`;
+            }
+            
+            crmData += `\n=== MORTGAGE INFORMATION ===\n`;
+            crmData += `Mortgage Amount: $${document.getElementById('mortgageAmount').value || 'N/A'}\n`;
+            crmData += `Home Purchase Type: ${document.getElementById('homePurchaseType').value || 'N/A'}\n`;
+            crmData += `Mortgage Term: ${document.getElementById('mortgageTerm').value || 'N/A'} years\n`;
+            crmData += `Monthly Payment: $${document.getElementById('monthlyPayment').value || 'N/A'}\n`;
+            crmData += `Monthly Mortgage Payment: $${document.getElementById('mortgagePaymentDetails').value || 'N/A'}\n`;
+            
+            crmData += `\n=== MORTGAGE ADDRESS ===\n`;
+            crmData += `Address: ${document.getElementById('mortgageAddress').value || 'N/A'}\n`;
+            
+            crmData += `\n=== INCOME & BENEFICIARY ===\n`;
+            crmData += `Primary Occupation: ${document.getElementById('occupation').value || 'N/A'}\n`;
+            crmData += `Primary Monthly Income: $${document.getElementById('monthlyIncome').value || 'N/A'}\n`;
+            if (applicationType === 'partners') {
+                crmData += `Partner 2 Occupation: ${document.getElementById('partner2Occupation').value || 'N/A'}\n`;
+                crmData += `Partner 2 Monthly Income: $${document.getElementById('partner2MonthlyIncome').value || 'N/A'}\n`;
+            }
+            crmData += `Beneficiary Name: ${document.getElementById('beneficiaryName').value || 'N/A'}\n`;
+            crmData += `Beneficiary Plan: ${document.getElementById('beneficiaryPlan').value || 'N/A'}\n`;
+            crmData += `Beneficiary Location: ${document.getElementById('beneficiaryLocation').value || 'N/A'}\n`;
+            
+            crmData += `\n=== PARTNER 1 DETAILS ===\n`;
+            crmData += formatApplicantData(partner1Data);
+            crmData += `Risk Class: ${partner1RiskClass.replace('Risk Class: ', '')}\n`;
+            crmData += `Recommended Tool: ${partner1Tool.replace('Recommended Tool: ', '')}\n`;
+            if (partner1Options !== 'None') crmData += `Options: ${partner1Options.replace('Options: ', '')}\n`;
+            if (partner1Reasoning !== 'None') crmData += `Reasoning: ${partner1Reasoning.replace('Reasoning:', '').trim()}\n`;
+            
+            if (applicationType === 'partners' && partner2Data) {
+                crmData += `\n=== PARTNER 2 DETAILS ===\n`;
+                crmData += formatApplicantData(partner2Data);
+                crmData += `Risk Class: ${partner2RiskClass.replace('Risk Class: ', '')}\n`;
+                crmData += `Recommended Tool: ${partner2Tool.replace('Recommended Tool: ', '')}\n`;
+                if (partner2Options !== 'None') crmData += `Options: ${partner2Options.replace('Options: ', '')}\n`;
+                if (partner2Reasoning !== 'None') crmData += `Reasoning: ${partner2Reasoning.replace('Reasoning:', '').trim()}\n`;
+            }
+            
+            crmData += `\n=== COMBINED RECOMMENDATION ===\n`;
+            crmData += `Risk Class: ${combinedRiskClass.replace('Risk Class: ', '')}\n`;
+            crmData += `Recommended Tool: ${combinedTool.replace('Recommended Tool: ', '')}\n`;
+            if (combinedOptions !== 'None') crmData += `Options: ${combinedOptions.replace('Options: ', '')}\n`;
+            if (combinedReasoning !== 'None') crmData += `Reasoning: ${combinedReasoning.replace('Reasoning:', '').trim()}\n`;
+            
+            crmData += `\n=== COVERAGE OPTIONS ===\n`;
+            crmData += `FE Option 1: ${document.getElementById('option1').value || 'N/A'}\n`;
+            crmData += `FE Option 2: ${document.getElementById('option2').value || 'N/A'}\n`;
+            crmData += `FE Option 3: ${document.getElementById('option3').value || 'N/A'}\n`;
+            crmData += `Term Option 1: ${document.getElementById('termOption1').value || 'N/A'}\n`;
+            crmData += `Term Option 2: ${document.getElementById('termOption2').value || 'N/A'}\n`;
+            crmData += `Term Option 3: ${document.getElementById('termOption3').value || 'N/A'}\n`;
+
+            
+            crmData += `\n=== BANK INFO ===\n`;
+            crmData += `Bank Name: ${document.getElementById('bankName').value || 'N/A'}\n`;
+            crmData += `Routing #: ${document.getElementById('rNumber').value || 'N/A'}\n`;
+            crmData += `Account #: ${document.getElementById('aNumber').value || 'N/A'}\n`;
+            crmData += `Draft Date: ${document.getElementById('draftDate').value || 'N/A'}\n`;
+            crmData += `Primary Email Address: ${document.getElementById('emailAddress1').value || 'N/A'}\n`;
+			crmData += `Secondary Email Address: ${document.getElementById('emailAddress2').value || 'N/A'}\n`;
+            
+            crmData += `\n=== APPROVAL STATUS ===\n`;
+            crmData += `Status: ${document.getElementById('approvalStatus').value || 'Pending'}\n`;
+            
+            crmData += `\n=== END OF DATA ===\n`;
+            
+            return crmData;
+        }
+
+        function formatApplicantData(data) {
+            let formatted = '';
+            formatted += `DOB: ${formatDateMMDDYYYY(document.getElementById(`${data.prefix}Dob`).value)}\n`;
+            formatted += `Age: ${data.age}\n`;
+            formatted += `Height: ${data.feet}'${data.inches}"\n`;
+            formatted += `Weight: ${data.weight} lbs\n`;
+            formatted += `Smoker: ${data.smoker === 'yes' ? 'Yes' : 'No'}\n`;
+            
+            // Medications
+            const medInputs = document.querySelectorAll(`#${data.prefix}Medications input`);
+            const medications = Array.from(medInputs)
+                .map(input => input.value.trim())
+                .filter(val => val !== '');
+                
+            formatted += `Medications (${medications.length}): ${medications.join(', ') || 'None'}\n`;
+            
+            // Knockouts
+            formatted += `Knockout Conditions: ${data.knockouts.length > 0 ? data.knockouts.join(', ') : 'None'}\n`;
+            
+            return formatted;
+        }
+
+        function getApplicantData(prefix) {
+            // Get height components
+            const feet = parseInt(document.getElementById(`${prefix}Feet`).value) || 0;
+            const inches = parseInt(document.getElementById(`${prefix}Inches`).value) || 0;
+            const heightInInches = (feet * 12) + inches;
+            
+            // Get age (from DOB or manual entry)
+            let age;
+            const dob = document.getElementById(`${prefix}Dob`).value;
+            if (dob) {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+            } else {
+                age = parseInt(document.getElementById(`${prefix}Age`).value) || 0;
+            }
+            
+            // Count medications
+            const medicationInputs = document.querySelectorAll(`#${prefix}Medications input`);
+            let medicationCount = 0;
+            medicationInputs.forEach(input => {
+                if (input.value.trim() !== '') medicationCount++;
+            });
+            
+            // Get all health data
+            const data = {
+                prefix: prefix,
+                age: age,
+                smoker: document.getElementById(`${prefix}Smoker`).value,
+                feet: feet,
+                inches: inches,
+                height: heightInInches,
+                weight: parseInt(document.getElementById(`${prefix}Weight`).value) || 0,
+                medicationCount: medicationCount,
+                knockouts: []
+            };
+            
+            // Check all knockout questions
+            const knockoutIds = [
+                'HeartIssues', 'Nitro', 'LungIssues', 'Inhalers', 'CPAP', 
+                'MentalHealth', 'MemoryMeds', 'HIV', 'Diabetes', 'Cancer',
+                'SubstanceAbuse', 'DUIs', 'LicenseSuspended', 'SpeedingTickets'
+            ];
+            
+            knockoutIds.forEach(id => {
+                const element = document.getElementById(`${prefix}${id}`);
+                if (element && element.checked) {
+                    data.knockouts.push(id.replace(/([A-Z])/g, ' $1').trim());
+                }
+            });
+            
+            // Check CPAP oxygen canister if CPAP is yes
+            if (document.getElementById(`${prefix}CPAP`) && document.getElementById(`${prefix}CPAP`).checked) {
+                const usesOxygen = document.getElementById(`${prefix}CPAPOxygen`).value === 'yes';
+                if (usesOxygen) {
+                    data.knockouts.push('CPAP With Oxygen');
+                }
+            }
+            
+            return data;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial summary update
+            updateSummary();
+            
+            // Application type toggle
+            const applicationTypeRadios = document.querySelectorAll('input[name="applicationType"]');
+            const partner1Column = document.getElementById('partner1Column');
+            const partner2Column = document.getElementById('partner2Column');
+            const partner1Gender = document.getElementById('partner1Gender');
+            const secondaryNameContainer = document.getElementById('secondaryNameContainer');
+			const secondaryEmailContainer = document.getElementById('secondaryEmailContainer');
+            const partner2GenderContainer = document.getElementById('partner2GenderContainer');
+            const partner2SSNContainer = document.getElementById('partner2SSNContainer');
+            const partner2OccupationContainer = document.getElementById('partner2OccupationContainer');
+            const partner2IncomeContainer = document.getElementById('partner2IncomeContainer');
+            const partner2DriverLicenseContainer = document.getElementById('partner2DriverLicenseContainer');
+            const partner2DriverLicenseStateContainer = document.getElementById('partner2DriverLicenseStateContainer');
+            const healthHeader = document.getElementById('healthHeader');
+            
+            applicationTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'solo') {
+                        healthHeader.textContent = 'PARTNER 1 HEALTH';
+                        partner2Column.classList.add('hidden');
+                        partner1Gender.classList.remove('hidden');
+                        secondaryNameContainer.classList.add('hidden');
+						secondaryEmailContainer.classList.add('hidden');
+                        partner2GenderContainer.classList.add('hidden');
+                        partner2SSNContainer.classList.add('hidden');
+                        partner2OccupationContainer.classList.add('hidden');
+                        partner2IncomeContainer.classList.add('hidden');
+                        partner2DriverLicenseContainer.classList.add('hidden');
+                        partner2DriverLicenseStateContainer.classList.add('hidden');
+                    } else {
+                        healthHeader.textContent = 'PARTNER 1 HEALTH';
+                        partner2Column.classList.remove('hidden');
+                        partner1Gender.classList.remove('hidden');
+                        secondaryNameContainer.classList.remove('hidden');
+						secondaryEmailContainer.classList.remove('hidden');
+                        partner2GenderContainer.classList.remove('hidden');
+                        partner2SSNContainer.classList.remove('hidden');
+                        partner2OccupationContainer.classList.remove('hidden');
+                        partner2IncomeContainer.classList.remove('hidden');
+                        partner2DriverLicenseContainer.classList.remove('hidden');
+                        partner2DriverLicenseStateContainer.classList.remove('hidden');
+                    }
+                    updateSummary();
+                });
+            });
+            
+            // CPAP oxygen canister follow-up logic
+            document.querySelectorAll('.cpap-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const followup = this.closest('.checkbox-group').nextElementSibling;
+                    if (this.checked) {
+                        followup.classList.remove('hidden');
+                    } else {
+                        followup.classList.add('hidden');
+                        if (followup.querySelector('select')) {
+                            followup.querySelector('select').value = 'no';
+                        }
+                    }
+                    updateSummary();
+                });
+            });
+            
+            // Calculate age from DOB
+            function setupDateChangeListener(prefix) {
+                const dobInput = document.getElementById(`${prefix}Dob`);
+                const ageInput = document.getElementById(`${prefix}Age`);
+                
+                if (dobInput && ageInput) {
+                    dobInput.addEventListener('change', function() {
+                        if (this.value) {
+                            const birthDate = new Date(this.value);
+                            const today = new Date();
+                            let age = today.getFullYear() - birthDate.getFullYear();
+                            const monthDiff = today.getMonth() - birthDate.getMonth();
+                            
+                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                                age--;
+                            }
+                            
+                            ageInput.value = age;
+                            updateSummary();
+                        }
+                    });
+                }
+            }
+            
+            setupDateChangeListener('partner1');
+            setupDateChangeListener('partner2');
+            
+            // Approval status toggle
+            document.getElementById('approvalStatus').addEventListener('change', function() {
+                const approvedMsg = document.getElementById('approvedMessage');
+                const underwritingMsg = document.getElementById('underwritingMessage');
+                const declinedMsg = document.getElementById('declinedMessage');
+                
+                if (this.value === 'approved') {
+                    approvedMsg.classList.remove('hidden');
+                    underwritingMsg.classList.add('hidden');
+                    declinedMsg.classList.add('hidden');
+                } else if (this.value === 'underwriting') {
+                    approvedMsg.classList.add('hidden');
+                    underwritingMsg.classList.remove('hidden');
+                    declinedMsg.classList.add('hidden');
+                } else {
+                    approvedMsg.classList.add('hidden');
+                    underwritingMsg.classList.add('hidden');
+                    declinedMsg.classList.remove('hidden');
+                }
+                updateSummary();
+            });
+            
+            // Calculate button handler
+            document.getElementById('calculateBtn').addEventListener('click', function() {
+                const applicationType = document.querySelector('input[name="applicationType"]:checked').value;
+                const results = document.getElementById('results');
+                const partner1Results = document.getElementById('partner1Results');
+                const partner2Results = document.getElementById('partner2Results');
+                const combinedResults = document.getElementById('combinedResults');
+                
+                // Get applicant data
+                let partner1Data, partner2Data;
+                
+                if (applicationType === 'solo') {
+                    const gender = document.getElementById('partner1GenderSelect').value;
+                    partner1Data = getApplicantData('partner1');
+                    partner2Data = null;
+                } else {
+                    partner1Data = getApplicantData('partner1');
+                    partner2Data = getApplicantData('partner2');
+                }
+                
+                // Determine risk class and tool for Partner 1
+                const partner1Assessment = determineRiskAndTool(partner1Data);
+                displayAssessmentResults('partner1', partner1Assessment);
+                partner1Results.classList.remove('hidden');
+                
+                let partner2Assessment = null;
+                if (applicationType === 'partners' && partner2Data) {
+                    partner2Assessment = determineRiskAndTool(partner2Data);
+                    displayAssessmentResults('partner2', partner2Assessment);
+                    partner2Results.classList.remove('hidden');
+                } else {
+                    partner2Results.classList.add('hidden');
+                }
+                
+                // Determine combined recommendation
+                let combinedAssessment = {
+                    riskClass: partner1Assessment.riskClass,
+                    tool: partner1Assessment.tool,
+                    notes: [...partner1Assessment.notes],
+                    options: [...partner1Assessment.options],
+                    reasoning: [...partner1Assessment.reasoning]
+                };
+                
+                if (applicationType === 'partners' && partner2Data) {
+                    // If either requires toolkit or is impaired, both use toolkit
+                    if (partner1Assessment.riskClass === 'Impaired' || partner2Assessment.riskClass === 'Impaired') {
+                        combinedAssessment.riskClass = 'Impaired';
+                        combinedAssessment.tool = 'TOOLKIT FE (required for both)';
+                        combinedAssessment.notes = ['One partner is impaired - both must use TOOLKIT FE'];
+                        combinedAssessment.options = [];
+                        combinedAssessment.reasoning = [
+                            'One partner has Impaired risk class',
+                            'When any partner is Impaired, both must use TOOLKIT FE',
+                            'No other options available in this case'
+                        ];
+                    } 
+                    // If both are Preferred or Standard
+                    else {
+                        // Use worse risk class
+                        const riskOrder = ['Impaired', 'Standard', 'Preferred'];
+                        const partner1RiskIndex = riskOrder.indexOf(partner1Assessment.riskClass);
+                        const partner2RiskIndex = riskOrder.indexOf(partner2Assessment.riskClass);
+                        combinedAssessment.riskClass = riskOrder[Math.min(partner1RiskIndex, partner2RiskIndex)];
+                        
+                        // Set toolkit options
+                        if (combinedAssessment.riskClass === 'Standard') {
+                            combinedAssessment.tool = 'TOOLKIT TERM or CO-PILOT TERM (+20%)';
+                            combinedAssessment.options = ['TOOLKIT TERM', 'CO-PILOT TERM (+20%)'];
+                            combinedAssessment.reasoning.push('Standard risk class for both partners qualifies for these TERM options');
+                        } else {
+                            combinedAssessment.tool = 'CO-PILOT TERM or FE';
+                            combinedAssessment.options = ['CO-PILOT TERM', 'CO-PILOT FE'];
+                            combinedAssessment.reasoning.push('Preferred risk class for both partners qualifies for these options');
+                        }
+                    }
+                }
+                
+                // Display combined results
+                displayAssessmentResults('combined', combinedAssessment);
+                combinedResults.classList.remove('hidden');
+                
+                // Show results section
+                results.classList.remove('hidden');
+                
+                // Update summary with the new results
+                updateSummary();
+            });
+            
+            function displayAssessmentResults(prefix, assessment) {
+                const riskClassElement = document.getElementById(`${prefix}RiskClass`);
+                const toolElement = document.getElementById(`${prefix}Tool`);
+                const optionsElement = document.getElementById(`${prefix}Options`);
+                const reasoningElement = document.getElementById(`${prefix}Reasoning`);
+                
+                riskClassElement.innerHTML = `<strong>Risk Class:</strong> ${assessment.riskClass}`;
+                
+                // Add links for TOOLKIT FE or TOOLKIT TERM
+                if (assessment.tool.includes('TOOLKIT FE')) {
+                    toolElement.innerHTML = `<strong>Recommended Tool:</strong> <a href="https://app.insurancetoolkits.com/fex/quoter" target="_blank" class="tool-link">${assessment.tool}</a>`;
+                } 
+                else if (assessment.tool.includes('TOOLKIT TERM')) {
+                    toolElement.innerHTML = `<strong>Recommended Tool:</strong> <a href="https://app.insurancetoolkits.com/term/quoter" target="_blank" class="tool-link">${assessment.tool}</a>`;
+                }
+                else {
+                    toolElement.innerHTML = `<strong>Recommended Tool:</strong> ${assessment.tool}`;
+                }
+                
+                if (assessment.options && assessment.options.length > 0) {
+                    optionsElement.innerHTML = `<strong>Options:</strong> ${assessment.options.join(' or ')}`;
+                    optionsElement.classList.remove('hidden');
+                } else {
+                    optionsElement.classList.add('hidden');
+                }
+                
+                if (assessment.reasoning && assessment.reasoning.length > 0) {
+                    reasoningElement.innerHTML = `<strong>Reasoning:</strong><br>${assessment.reasoning.join('<br>• ')}`;
+                } else {
+                    reasoningElement.innerHTML = '';
+                }
+            }
+            
+            // Add event listener for the new button
+            document.getElementById('saveToCrmBtn').addEventListener('click', function() {
+                const crmData = gatherDataForCRM();
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(crmData).then(function() {
+                    const status = document.getElementById('copyStatus');
+                    status.style.display = 'inline';
+                    setTimeout(function() {
+                        status.style.display = 'none';
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Could not copy text: ', err);
+                    // Fallback for browsers that don't support clipboard API
+                    const textarea = document.createElement('textarea');
+                    textarea.value = crmData;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        const status = document.getElementById('copyStatus');
+                        status.style.display = 'inline';
+                        setTimeout(function() {
+                            status.style.display = 'none';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Fallback copy failed: ', err);
+                    }
+                    document.body.removeChild(textarea);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
