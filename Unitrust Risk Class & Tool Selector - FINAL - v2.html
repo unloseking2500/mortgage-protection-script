@@ -1703,7 +1703,11 @@ questions, call me please.”</p>
     <!-- ACTION BUTTONS -->
     <div class="button-group">
         <button id="saveToCrmBtn" class="secondary">Save to CRM</button>
+        <button id="loadFromCrmBtn" class="secondary">Load from CRM</button>
         <span id="copyStatus">Copied to clipboard!</span>
+    </div>
+    <div class="form-group">
+        <textarea id="crmDataInput" rows="6" placeholder="Paste exported CRM data here"></textarea>
     </div>
 
 
@@ -2665,6 +2669,96 @@ const partner2SSN = rawSSN2
             return data;
         }
 
+        // Parse CRM exported text into key/value pairs
+        function parseCRMData(text) {
+            const data = {};
+            text.split(/\r?\n/).forEach(line => {
+                const m = line.match(/^([^:]+):\s*(.*)$/);
+                if (m) {
+                    data[m[1].trim()] = m[2].trim();
+                }
+            });
+            return data;
+        }
+
+        function mmddyyyyToIso(str) {
+            const m = str.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            if (!m) return '';
+            const mm = m[1].padStart(2, '0');
+            const dd = m[2].padStart(2, '0');
+            return `${m[3]}-${mm}-${dd}`;
+        }
+
+        // Populate form fields from CRM text
+        function importCRMData() {
+            const text = document.getElementById('crmDataInput').value;
+            if (!text) return;
+            const d = parseCRMData(text);
+
+            if (d['Application Type']) {
+                const val = d['Application Type'].toLowerCase() === 'partners' ? 'partners' : 'solo';
+                const radio = document.querySelector(`input[name="applicationType"][value="${val}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    radio.dispatchEvent(new Event('change'));
+                }
+            }
+
+            if (d['Primary Applicant Name']) document.getElementById('primaryFullName').value = d['Primary Applicant Name'];
+            if (d['Primary Applicant Gender']) document.getElementById('partner1GenderSelect').value = d['Primary Applicant Gender'].toLowerCase();
+            if (d['Primary Applicant SSN']) document.getElementById('partner1SSN').value = d['Primary Applicant SSN'];
+            if (d['Primary Applicant DOB']) document.getElementById('partner1Dob').value = mmddyyyyToIso(d['Primary Applicant DOB']);
+            if (d['Primary Driver License']) {
+                const parts = d['Primary Driver License'].split(',');
+                document.getElementById('partner1DriverLicense').value = parts[0] ? parts[0].trim() : '';
+                document.getElementById('partner1DriverLicenseState').value = parts[1] ? parts[1].trim() : '';
+            }
+
+            if (d['Secondary Applicant Name']) document.getElementById('secondaryFullName').value = d['Secondary Applicant Name'];
+            if (d['Secondary Applicant Gender']) document.getElementById('partner2Gender').value = d['Secondary Applicant Gender'].toLowerCase();
+            if (d['Secondary Applicant SSN']) document.getElementById('partner2SSN').value = d['Secondary Applicant SSN'];
+            if (d['Secondary Applicant DOB']) document.getElementById('partner2Dob').value = mmddyyyyToIso(d['Secondary Applicant DOB']);
+            if (d['Secondary Driver License']) {
+                const parts = d['Secondary Driver License'].split(',');
+                document.getElementById('partner2DriverLicense').value = parts[0] ? parts[0].trim() : '';
+                document.getElementById('partner2DriverLicenseState').value = parts[1] ? parts[1].trim() : '';
+            }
+
+            const num = v => (v || '').replace(/[^0-9.]/g, '');
+
+            if (d['Mortgage Amount']) document.getElementById('mortgageAmount').value = num(d['Mortgage Amount']);
+            if (d['Home Purchase Type']) document.getElementById('homePurchaseType').value = d['Home Purchase Type'];
+            if (d['Mortgage Term']) document.getElementById('mortgageTerm').value = num(d['Mortgage Term']);
+            if (d['Monthly Payment']) document.getElementById('monthlyPayment').value = num(d['Monthly Payment']);
+            if (d['Monthly Mortgage Payment']) document.getElementById('mortgagePaymentDetails').value = num(d['Monthly Mortgage Payment']);
+            if (d['Address']) document.getElementById('mortgageAddress').value = d['Address'];
+
+            if (d['Primary Occupation']) document.getElementById('occupation').value = d['Primary Occupation'];
+            if (d['Primary Monthly Income']) document.getElementById('monthlyIncome').value = num(d['Primary Monthly Income']);
+            if (d['Partner 2 Occupation']) document.getElementById('partner2Occupation').value = d['Partner 2 Occupation'];
+            if (d['Partner 2 Monthly Income']) document.getElementById('partner2MonthlyIncome').value = num(d['Partner 2 Monthly Income']);
+            if (d['Beneficiary Name']) document.getElementById('beneficiaryName').value = d['Beneficiary Name'];
+            if (d['Beneficiary Plan']) document.getElementById('beneficiaryPlan').value = d['Beneficiary Plan'];
+            if (d['Beneficiary Location']) document.getElementById('beneficiaryLocation').value = d['Beneficiary Location'];
+
+            if (d['FE Option 1']) document.getElementById('option1').value = d['FE Option 1'];
+            if (d['FE Option 2']) document.getElementById('option2').value = d['FE Option 2'];
+            if (d['FE Option 3']) document.getElementById('option3').value = d['FE Option 3'];
+            if (d['Term Option 1']) document.getElementById('termOption1').value = d['Term Option 1'];
+            if (d['Term Option 2']) document.getElementById('termOption2').value = d['Term Option 2'];
+            if (d['Term Option 3']) document.getElementById('termOption3').value = d['Term Option 3'];
+
+            if (d['Bank Name']) document.getElementById('bankName').value = d['Bank Name'];
+            if (d['Routing #']) document.getElementById('rNumber').value = d['Routing #'];
+            if (d['Account #']) document.getElementById('aNumber').value = d['Account #'];
+            if (d['Draft Date']) document.getElementById('draftDate').value = d['Draft Date'];
+            if (d['Primary Email Address']) document.getElementById('emailAddress1').value = d['Primary Email Address'];
+            if (d['Secondary Email Address']) document.getElementById('emailAddress2').value = d['Secondary Email Address'];
+            if (d['Status']) document.getElementById('approvalStatus').value = d['Status'].toLowerCase();
+
+            updateSummary();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Initial summary update
             updateSummary();
@@ -2930,7 +3024,12 @@ const partner2SSN = rawSSN2
                         console.error('Fallback copy failed: ', err);
                     }
                     document.body.removeChild(textarea);
-                });
+            });
+            });
+
+            // Import data back into the form
+            document.getElementById('loadFromCrmBtn').addEventListener('click', function() {
+                importCRMData();
             });
         });
     </script>
