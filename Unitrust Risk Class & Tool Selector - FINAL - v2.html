@@ -2864,15 +2864,24 @@ const partner2SSN = rawSSN2
                 conds.split(',').forEach(raw => {
                     const cond = raw.trim();
                     const key = cond.toLowerCase();
-                    if (key === 'cpap with oxygen') {
+
+                    if (key.includes('cpap')) {
                         const box = document.getElementById(`${prefix}CPAP`);
                         if (box) box.checked = true;
                         const oxy = document.getElementById(`${prefix}CPAPOxygen`);
                         if (oxy) {
-                            oxy.value = 'yes';
-                            oxy.closest('.cpap-followup').classList.remove('hidden');
+                            if (key.includes('oxygen')) {
+                                oxy.value = 'yes';
+                                oxy.closest('.cpap-followup').classList.remove('hidden');
+                            } else {
+                                oxy.value = 'no';
+                                oxy.closest('.cpap-followup').classList.add('hidden');
+                            }
                         }
-                    } else if (knockoutMap[key]) {
+                        return;
+                    }
+
+                    if (knockoutMap[key]) {
                         const el = document.getElementById(`${prefix}${knockoutMap[key]}`);
                         if (el) el.checked = true;
                     }
@@ -2953,6 +2962,9 @@ const partner2SSN = rawSSN2
             if (d['Primary Email Address']) document.getElementById('emailAddress1').value = d['Primary Email Address'];
             if (d['Secondary Email Address']) document.getElementById('emailAddress2').value = d['Secondary Email Address'];
             if (d['Status']) document.getElementById('approvalStatus').value = d['Status'].toLowerCase();
+
+            // Sync values to premium calculation section after import
+            syncMortgageValues();
 
             updateSummary();
         }
