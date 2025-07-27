@@ -1742,9 +1742,11 @@ function populateCloseOptions(sourceInput) {
         
         if (closeField) {
             const coverageAmount = row.cells[1].textContent.trim();
+            const p1Premium = (row.querySelector("td:nth-child(3) input") || {}).value ? row.querySelector("td:nth-child(3) input").value.trim() : "$0";
+            const p2Premium = (row.querySelector("td:nth-child(4) input") || {}).value ? row.querySelector("td:nth-child(4) input").value.trim() : "$0";
             const combinedPremium = row.cells[4].textContent.trim();
-            
-            closeField.value = `${row.cells[0].textContent.trim()}, ${coverageAmount}, ${combinedPremium}`;
+
+            closeField.value = `${row.cells[0].textContent.trim()}, ${coverageAmount}, P1 ${p1Premium}, P2 ${p2Premium}, ${combinedPremium}`;
         }
     }
     
@@ -2823,6 +2825,28 @@ const partner2SSN = rawSSN2
                 'speeding tickets': 'SpeedingTickets'
             };
 
+            const applyMedications = (prefix, info) => {
+                if (!info) return;
+                const medKey = Object.keys(info).find(k => k.toLowerCase().startsWith('medications'));
+                const medStr = medKey ? info[medKey] : '';
+                const container = document.getElementById(`${prefix}Medications`);
+                if (!container) return;
+                container.innerHTML = '';
+                if (!medStr || medStr.toLowerCase() === 'none') {
+                    addMedication(prefix); // add empty row
+                    return;
+                }
+                medStr.split(',').forEach(m => {
+                    const med = m.trim();
+                    if (med) {
+                        const row = document.createElement('div');
+                        row.className = 'medication-row';
+                        row.innerHTML = `<input type="text" placeholder="Medication name" oninput="updateSummary()" value="${med}">`;
+                        container.appendChild(row);
+                    }
+                });
+            };
+
             const applyKnockouts = (prefix, info) => {
                 if (!info || !info['Knockout Conditions']) return;
                 // clear existing
@@ -2857,6 +2881,17 @@ const partner2SSN = rawSSN2
 
             applyKnockouts('partner1', details.partner1);
             applyKnockouts('partner2', details.partner2);
+			applyMedications('partner1', details.partner1);
+            applyMedications('partner2', details.partner2);
+            const parseOptionString = str => {
+                if (!str) return null;
+                const m = str.match(/^(.*?),(?:.*?,)?\s*P1\s*([^,]+),\s*P2\s*([^,]+),\s*(.+)$/);
+                if (m) {
+                    return { label: m[1].trim(), p1: m[2].trim(), p2: m[3].trim(), combined: m[4].trim() };
+                }
+                const parts = str.split(',').map(s => s.trim());
+                return { label: parts[0] || '', p1: '', p2: '', combined: parts[parts.length - 1] || '' };
+            };
 
             const num = v => (v || '').replace(/[^0-9.]/g, '');
 
@@ -2881,6 +2916,35 @@ const partner2SSN = rawSSN2
             if (d['Term Option 1']) document.getElementById('termOption1').value = d['Term Option 1'];
             if (d['Term Option 2']) document.getElementById('termOption2').value = d['Term Option 2'];
             if (d['Term Option 3']) document.getElementById('termOption3').value = d['Term Option 3'];
+			const wlMap = { '3 Months': 1, '6 Months': 2, '9 Months': 3, '1 Year': 4, '18 Months': 5, '2 Years': 6, '3 Years': 7 };
+            const termMap = { '25%': 1, '33%': 2, '50%': 3, '75%': 4, '100%': 5 };
+            const applyPremium = (type, map, optNum, str) => {
+                const info = parseOptionString(str);
+                if (!info) return;
+                const idx = map[info.label];
+                if (!idx) return;
+                const prefix = type === 'wl' ? 'wlOption' : 'termOption';
+                const p1 = document.getElementById(`${prefix}${idx}PersonA`);
+                const p2 = document.getElementById(`${prefix}${idx}PersonB`);
+                if (p1) p1.value = info.p1;
+                if (p2) p2.value = info.p2;
+                if (type === 'wl') calculateWlCombined(idx); else calculateTermCombined(idx);
+                const row = p1 ? p1.closest('tr') : (p2 ? p2.closest('tr') : null);
+                if (row) {
+                    const select = row.querySelector('select');
+                    if (select) {
+                        select.value = type === 'wl' ? `w${optNum}` : `t${optNum}`;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }
+            };
+
+            applyPremium('wl', wlMap, 1, d['FE Option 1']);
+            applyPremium('wl', wlMap, 2, d['FE Option 2']);
+            applyPremium('wl', wlMap, 3, d['FE Option 3']);
+            applyPremium('term', termMap, 1, d['Term Option 1']);
+            applyPremium('term', termMap, 2, d['Term Option 2']);
+            applyPremium('term', termMap, 3, d['Term Option 3']);
 
             if (d['Bank Name']) document.getElementById('bankName').value = d['Bank Name'];
             if (d['Routing #']) document.getElementById('rNumber').value = d['Routing #'];
